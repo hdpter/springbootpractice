@@ -1,1 +1,3 @@
-insert into FOO(ID,BAR) values (1,'aaa'),(2,'bbb');
+insert into FOO(ID, BAR)
+values (1, 'aaa'),
+       (2, 'bbb');

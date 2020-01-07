@@ -28,7 +28,6 @@ public class Application implements CommandLineRunner {
 
     /**
      * Callback used to run the bean.
-     *
      * @param args incoming main method arguments
      * @throws Exception on error
      */
@@ -40,8 +39,8 @@ public class Application implements CommandLineRunner {
 
     private void showData() {
 
-        jdbcTemplate.queryForList("select * from FOO ").forEach((key)->{
-                log.info("{}",key.toString());
+        jdbcTemplate.queryForList("select * from FOO ").forEach((key) -> {
+            log.info("{}", key.toString());
         });
 
     }

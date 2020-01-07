@@ -1,1 +1,5 @@
-create table FOO(ID IDENTITY,BAR varchar(64) )
+create table FOO
+(
+    ID IDENTITY,
+    BAR varchar(64)
+)
