@@ -22,31 +22,29 @@ public class UserLoginBiz {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1)
     public UserLoginEntity getUserById(Integer id) {
-        return userLoginEntityMapper.getUserLoginById(id);
+        return userLoginEntityMapper.selectByPrimaryKey(id);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1)
     public Integer insertUser(UserLoginEntity userLoginEntity) {
-        return userLoginEntityMapper.insertUserLogin(userLoginEntity);
+        return userLoginEntityMapper.insertSelective(userLoginEntity);
     }
 
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1,propagation = Propagation.REQUIRED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1, propagation = Propagation.REQUIRED)
     public Integer insertUserRequired(UserLoginEntity userLoginEntity) {
-        return userLoginEntityMapper.insertUserLogin(userLoginEntity);
+        return userLoginEntityMapper.insertSelective(userLoginEntity);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1,propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1, propagation = Propagation.REQUIRES_NEW)
     public Integer insertUserRequiredNew(UserLoginEntity userLoginEntity) {
-        return userLoginEntityMapper.insertUserLogin(userLoginEntity);
+        return userLoginEntityMapper.insertSelective(userLoginEntity);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1,propagation = Propagation.NESTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, timeout = 1, propagation = Propagation.NESTED)
     public Integer insertUserNest(UserLoginEntity userLoginEntity) {
-        return userLoginEntityMapper.insertUserLogin(userLoginEntity);
+        return userLoginEntityMapper.insertSelective(userLoginEntity);
     }
-
-
 
 
 }
