@@ -1,24 +1,28 @@
 package com.springbootpractice.demo.tx.transactional.dao.mapper;
 
 import com.springbootpractice.demo.tx.transactional.dao.entity.UserLoginEntity;
-import com.springbootpractice.demo.tx.transactional.dao.entity.UserLoginEntityExample;
+import com.springbootpractice.demo.tx.transactional.dao.example.UserLoginEntityExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface UserLoginEntityMapper {
+    long countByExample(UserLoginEntityExample example);
 
-    /**插入用户信息
-     * @param param
-     * @return
-     */
-    Integer insertUserLogin(@Param("param") UserLoginEntity param);
+    int insert(UserLoginEntity record);
 
-    /**按照id查询用户信息
-     * @param id
-     * @return
-     */
-    UserLoginEntity getUserLoginById(@Param("id") Integer id);
+    int insertSelective(UserLoginEntity record);
+
+    List<UserLoginEntity> selectByExample(UserLoginEntityExample example);
+
+    UserLoginEntity selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") UserLoginEntity record, @Param("example") UserLoginEntityExample example);
+
+    int updateByExample(@Param("record") UserLoginEntity record, @Param("example") UserLoginEntityExample example);
+
+    int updateByPrimaryKeySelective(UserLoginEntity record);
+
+    int updateByPrimaryKey(UserLoginEntity record);
 }

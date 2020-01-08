@@ -1,4 +1,4 @@
-package com.springbootpractice.demo.tx.transactional.dao.entity;
+package com.springbootpractice.demo.tx.transactional.dao.example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class UserLoginEntityExample {
     }
 
     public UserLoginEntityExample page(Integer page, Integer pageSize) {
-        this.offset = page * pageSize;
+        this.offset = (page - 1) * pageSize;
         this.rows = pageSize;
         return this;
     }

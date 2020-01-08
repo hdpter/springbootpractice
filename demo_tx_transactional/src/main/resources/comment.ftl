@@ -91,8 +91,8 @@
     -->
     <comment ID="addModelClassComment"><![CDATA[
 /**
-* author: carter
-* 对应数据库表： ${introspectedTable.fullyQualifiedTable}
+* @author: carter
+* 对应数据库表： ${introspectedTable.fullyQualifiedTable}  ${introspectedTable.fullyQualifiedTable}
 */
         ]]></comment>
 

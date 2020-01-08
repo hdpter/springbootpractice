@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserLoginEntity {
     /**
     * 主键  对应数据库表字段: user_login.id
