@@ -25,10 +25,10 @@
             <!-- @Data 默认开启,同时插件会对子类自动附加@EqualsAndHashCode(callSuper = true)，@ToString(callSuper = true) -->
             <property name="@Data" value="true"/>
             <!-- @Builder 必须在 Lombok 版本 >= 1.18.2 的情况下开启，对存在继承关系的类自动替换成@SuperBuilder -->
-            <property name="@Builder" value="false"/>
+            <property name="@Builder" value="true"/>
             <!-- @NoArgsConstructor 和 @AllArgsConstructor 使用规则和Lombok一致 -->
-            <property name="@AllArgsConstructor" value="false"/>
-            <property name="@NoArgsConstructor" value="false"/>
+            <property name="@AllArgsConstructor" value="true"/>
+            <property name="@NoArgsConstructor" value="true"/>
             <!-- @Getter、@Setter、@Accessors 等使用规则参见官方文档 -->
             <property name="@Accessors(chain = true)" value="false"/>
             <!-- 临时解决IDEA工具对@SuperBuilder的不支持问题，开启后(默认未开启)插件在遇到@SuperBuilder注解时会调用ModelBuilderPlugin来生成相应的builder代码 -->
@@ -39,15 +39,15 @@
         <!-- Mapper注解插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.MapperAnnotationPlugin">
             <!-- @Mapper 默认开启 -->
-            <property name="@Mapper" value="true"/>
+            <property name="@Mapper" value="false"/>
             <!-- @Repository 默认关闭，开启后解决IDEA工具@Autowired报错 -->
-            <property name="@Repository" value="false"/>
+            <property name="@Repository" value="true"/>
         </plugin>
 
         <!-- MySQL分页插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin">
             <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->
-            <property name="startPage" value="0"/>
+            <property name="startPage" value="1"/>
         </plugin>
 
 
@@ -64,17 +64,17 @@
     PROJECT_DIR: the project base path.
     CURRENT_DIR: the configuration file path.
     -->
-        <javaModelGenerator targetPackage="com.springbootpractice.demo.tx.transactional.dao.entity"
+        <javaModelGenerator targetPackage="${model.package}"
                             targetProject="src/main/java">
             <property name="trimStrings" value="true"/>
                         <property name="enableSubPackages" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="${xml.package}" targetProject="src/main/resources">
                         <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator targetPackage="com.springbootpractice.demo.tx.transactional.dao.mapper"
+        <javaClientGenerator targetPackage="${mapper.package}"
                              targetProject="src/main/java" type="XMLMAPPER">
                         <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
@@ -90,7 +90,8 @@
         <!--      &ndash;&gt;-->
         <!--        </table>-->
 
-        <table domainObjectName="UserLoginEntity" tableName="user_login">
+        <table domainObjectName="UserLoginEntity" tableName="user_login"
+               enableInsert="true" enableSelectByPrimaryKey="true" >
             <generatedKey column="id" identity="true" sqlStatement="MySql"/>
         </table>
 
