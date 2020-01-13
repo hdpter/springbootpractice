@@ -55,7 +55,6 @@ public class BatchUserLoginBiz {
 
         AtomicInteger count = new AtomicInteger();
         userLoginEntityList.forEach(userLoginEntity -> {
-
             count.addAndGet(userLoginBiz.insertUserNest(userLoginEntity));
 
         });
