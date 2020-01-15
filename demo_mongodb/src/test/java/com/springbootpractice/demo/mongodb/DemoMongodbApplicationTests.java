@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class DemoMongodbApplicationTests {
 
     @Autowired
@@ -37,7 +37,7 @@ class DemoMongodbApplicationTests {
 
         });
 
-        userService.findUser("user", "note", 0, 10)
+        userService.findUser("user", "note", 0, 30)
                 .forEach(System.out::println);
 
     }
