@@ -13,35 +13,33 @@ import java.util.stream.IntStream;
 @SpringBootTest
 class DemoMongodbApplicationTests {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
+    @Test
+    void mongodbTest() {
 
-	@Test
-	void mongodbTest() {
+        IntStream.rangeClosed(1, 10).forEach((item) -> {
+            final long id = System.currentTimeMillis();
+            userService.saveUser(User.builder().id(id)
+                    .userName("user")
+                    .note("note")
+                    .roles(Arrays.asList(Role.builder().id(id)
+                                    .roleName("role" + id)
+                                    .note("note" + id)
+                                    .build(),
+                            Role.builder().id(id + 1000000)
+                                    .roleName("_role" + id)
+                                    .note("_note" + id)
+                                    .build()
+                    ))
+                    .build());
 
-		IntStream.rangeClosed(1,10).forEach((item)->{
-			final long id = System.currentTimeMillis();
-			userService.saveUser(User.builder().id(id)
-					.userName("user")
-					.note("note")
-					.roles(Arrays.asList(Role.builder().id(id)
-							.roleName("role"+id)
-							.note("note"+id)
-							.build(),
-							Role.builder().id(id+1000000)
-									.roleName("_role"+id)
-									.note("_note"+id)
-									.build()
-							))
-					.build());
+        });
 
-		});
+        userService.findUser("user", "note", 0, 10)
+                .forEach(System.out::println);
 
-		userService.findUser("user","note",0,10)
-		.forEach(System.out::println);
-
-
-	}
+    }
 
 }
