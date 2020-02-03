@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Objects;
 @Slf4j
 public class ResponseBodyAndExceptionHandleBean implements ResponseBodyAdvice {
 
+   private static List<Class> clzList =  Arrays.asList(springfox.documentation.swagger2.web.Swagger2Controller.class,springfox.documentation.swagger.web.ApiResourceController.class);
     public ResponseBodyAndExceptionHandleBean() {
     }
 
@@ -50,13 +53,19 @@ public class ResponseBodyAndExceptionHandleBean implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return returnType.hasMethodAnnotation(ResponseBody.class)
-                || Objects.requireNonNull(returnType.getMethod()).getDeclaringClass().isAnnotationPresent(RestController.class);
+                || Objects.requireNonNull(returnType.getMethod()).getDeclaringClass().isAnnotationPresent(RestController.class)
+                || clzList.stream().anyMatch(clz->returnType.getMethod().getDeclaringClass().equals(clz));
 
     }
 
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
+        if (clzList.stream().anyMatch(clz->returnType.getMethod().getDeclaringClass().equals(clz))) {
+            return body;
+        }
+
         RestResponseBean restResponse = getResponse(body);
         log.info("\n===param_response===\n===json==={}", JsonUtil.toJson(restResponse));
         return restResponse;
