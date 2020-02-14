@@ -34,7 +34,4 @@ public class  RestResponseBean <T extends Object> implements Serializable {
     @ApiModelProperty("数据")
     private T data;
 
-    public static RestResponseBean success() {
-        return SUCCESS_BEAN;
-    }
 }

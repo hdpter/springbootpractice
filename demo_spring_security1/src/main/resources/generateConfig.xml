@@ -76,7 +76,7 @@
             <property name="trimStrings" value="true"/>
             <property name="enableSubPackages" value="true"/>
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="${code.base.package}.xml" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator targetPackage="${code.base.package}.mapper"
@@ -84,17 +84,19 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table domainObjectName="SaasUserEntity" tableName="saas_user"
+        <table domainObjectName="SecurityAppEntity" tableName="security_app"
                enableDeleteByExample="false" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" identity="true" sqlStatement="MySql"/>
         </table>
-
-        <table domainObjectName="SaasMemberEntity" tableName="saas_member"
+        <table domainObjectName="SecurityRoleEntity" tableName="security_role"
                enableDeleteByExample="false" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" identity="true" sqlStatement="MySql"/>
         </table>
-
-        <table domainObjectName="MechantConfigEntity" tableName="mechant_config"
+        <table domainObjectName="SecurityLoginEntity" tableName="security_login"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false">
+            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        </table>
+        <table domainObjectName="SecurityLoginRoleEntity" tableName="security_login_role"
                enableDeleteByExample="false" enableDeleteByPrimaryKey="false">
             <generatedKey column="id" identity="true" sqlStatement="MySql"/>
         </table>
