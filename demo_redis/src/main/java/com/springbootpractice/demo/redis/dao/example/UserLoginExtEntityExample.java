@@ -1,5 +1,7 @@
 package com.springbootpractice.demo.redis.dao.example;
 
+import com.springbootpractice.demo.redis.dao.entity.UserLoginExtEntity;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
