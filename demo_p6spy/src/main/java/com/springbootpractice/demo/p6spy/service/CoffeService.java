@@ -5,8 +5,6 @@ import com.springbootpractice.demo.p6spy.dao.entity.CoffeEntity;
 import com.springbootpractice.demo.p6spy.dao.repository.CoffeRepositry;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class CoffeService {
     }
 
     public List<CoffeEntity> findAll() {
-        return Lists.newArrayList( coffeRepositry.findAll());
+        return Lists.newArrayList(coffeRepositry.findAll());
     }
 
     public CoffeEntity getByName(String name) {
