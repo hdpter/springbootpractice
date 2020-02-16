@@ -55,6 +55,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>demo_helloworld</finalName>
     </build>
 
 </project>
