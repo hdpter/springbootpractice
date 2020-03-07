@@ -59,7 +59,7 @@
             {databaseName: databaseName},
             function (data) {
                 var content = data.data.markdownContent;
-                $("#markdownContent").empty().append(content);
+                $("#markdownContent").empty().val(content);
             }, "json");
     });
 

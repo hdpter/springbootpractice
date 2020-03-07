@@ -73,7 +73,7 @@ public class ResponseBodyAndExceptionHandleBean implements ResponseBodyAdvice {
 
     private RestResponseBean getResponse(Object body) {
         if (Objects.isNull(body)) {
-            return RestResponseBean.success();
+            return RestResponseBean.SUCCESS_BEAN;
         }
 
         if (body instanceof RestResponseBean) {

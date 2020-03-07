@@ -23,7 +23,7 @@ import java.io.Serializable;
 public class  RestResponseBean <T extends Object> implements Serializable {
     private static final long serialVersionUID = -6229606498548401773L;
 
-    private static RestResponseBean SUCCESS_BEAN =RestResponseBean.builder().code(HttpStatus.OK.value()).msg(HttpStatus.OK.name()).build();
+    public static RestResponseBean SUCCESS_BEAN =RestResponseBean.builder().code(HttpStatus.OK.value()).msg(HttpStatus.OK.name()).build();
 
     @ApiModelProperty("响应码，对应http的状态码")
     private Integer code;
@@ -33,5 +33,6 @@ public class  RestResponseBean <T extends Object> implements Serializable {
 
     @ApiModelProperty("数据")
     private T data;
+
 
 }
