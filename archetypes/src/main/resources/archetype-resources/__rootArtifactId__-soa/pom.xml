@@ -11,10 +11,17 @@
     <name>${rootArtifactId}-soa[对内接口发布单元]</name>
     <description>${rootArtifactId}微服务的对外HTTP接口</description>
     <dependencies>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>${groupId}</groupId>
             <artifactId>${rootArtifactId}-biz</artifactId>
