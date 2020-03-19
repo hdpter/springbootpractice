@@ -1,8 +1,8 @@
 package com.xxx.demo.biz.service.impl;
 
-import com.xxx.demo.dal.mapper.SysUserMapper;
-import com.xxx.demo.dal.model.SysUser;
-import com.xxx.demo.biz.service.SysUserService;
+import com.xxx.demo.dal.mapper.SysSettingMapper;
+import com.xxx.demo.dal.model.SysSetting;
+import com.xxx.demo.biz.service.SysSettingService;
 import com.xxx.demo.biz.configurer.core.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +15,8 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-public class SysUserServiceImpl extends AbstractService<SysUser> implements SysUserService {
+public class SysSettingServiceImpl extends AbstractService<SysSetting> implements SysSettingService {
     @Resource
-    private SysUserMapper sysUserMapper;
+    private SysSettingMapper sysSettingMapper;
 
 }
