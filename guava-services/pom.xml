@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>${groupId}</groupId>
-    <artifactId>${rootArtifactId}-services</artifactId>
-    <version>${version}</version>
+    <groupId>com.springbootpractice.guava.study</groupId>
+    <artifactId>guava-services</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>${rootArtifactId}-services[服务父POM]</name>
-    <description>${rootArtifactId}具体的服务,做服务的聚合和继承</description>
-    <url>https://gitlab.xxx.com/${rootArtifactId}-services</url>
+    <name>guava-services[服务父POM]</name>
+    <description>guava具体的服务,做服务的聚合和继承</description>
+    <url>https://gitlab.xxx.com/guava-services</url>
     <licenses>
         <license>
             <name>yyy License, Version 2.0</name>
@@ -17,14 +17,14 @@
     </licenses>
     <developers>
         <developer>
-            <name>${projectAuthor}</name>
+            <name>李福春</name>
             <email>xxx@xxx.com</email>
             <organization>yyy Software, Inc.</organization>
             <organizationUrl>https://www.yyy.com</organizationUrl>
         </developer>
     </developers>
     <scm>
-        <url>https://gitlab.xxx.com/${rootArtifactId}-services</url>
+        <url>https://gitlab.xxx.com/guava-services</url>
     </scm>
     <issueManagement>
         <system>tapd</system>
@@ -32,10 +32,9 @@
     </issueManagement>
 
     <properties>
-        <multi.model.version>${project.version}</multi.model.version>
+        <multi.model.version>1.0-SNAPSHOT</multi.model.version>
         <swagger2.version>2.9.2</swagger2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
         <project.build.jdk>1.8</project.build.jdk>
         <spring.boot.version>2.2.3.RELEASE</spring.boot.version>
     </properties>
@@ -98,17 +97,17 @@
             </dependency>
 
 
-<!--            &lt;!&ndash;MyBatis 及 插件依赖&ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis</groupId>-->
-<!--                <artifactId>mybatis-spring</artifactId>-->
-<!--                <version>1.3.1</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis</groupId>-->
-<!--                <artifactId>mybatis</artifactId>-->
-<!--                <version>3.4.5</version>-->
-<!--            </dependency>-->
+            <!--MyBatis 及 插件依赖-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>2.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.4</version>
+            </dependency>
             <dependency>
                 <groupId>tk.mybatis</groupId>
                 <artifactId>mapper</artifactId>
@@ -121,20 +120,20 @@
             </dependency>
 
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${rootArtifactId}-biz</artifactId>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-biz</artifactId>
                 <version>${multi.model.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${rootArtifactId}-dal</artifactId>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-dal</artifactId>
                 <version>${multi.model.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${rootArtifactId}-api</artifactId>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-api</artifactId>
                 <version>${multi.model.version}</version>
             </dependency>
 
@@ -147,6 +146,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -160,7 +160,7 @@
             <dependency>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
-                <version>1.4.0</version>
+                <version>1.3.5</version>
                 <scope>test</scope>
             </dependency>
 
@@ -168,6 +168,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.31</version>
                 <scope>runtime</scope>
             </dependency>
         </dependencies>
@@ -196,7 +197,7 @@
     </distributionManagement>
 
     <build>
-        <finalName>${rootArtifactId}-services</finalName>
+        <finalName>guava-services</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -267,4 +268,11 @@
         </plugins>
 
     </build>
+    <modules>
+        <module>guava-api</module>
+        <module>guava-dal</module>
+        <module>guava-biz</module>
+        <module>guava-rest</module>
+        <module>guava-soa</module>
+    </modules>
 </project>
