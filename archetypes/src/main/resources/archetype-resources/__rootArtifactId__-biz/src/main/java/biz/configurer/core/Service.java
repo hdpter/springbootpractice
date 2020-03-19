@@ -1,4 +1,4 @@
-package com.xxx.demo.biz.configurer.core;
+package ${package}.biz.configurer.core;
 
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import tk.mybatis.mapper.entity.Condition;

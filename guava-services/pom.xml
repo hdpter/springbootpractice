@@ -119,23 +119,7 @@
                 <version>5.1.11</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.springbootpractice.guava.study</groupId>
-                <artifactId>guava-biz</artifactId>
-                <version>${multi.model.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>com.springbootpractice.guava.study</groupId>
-                <artifactId>guava-dal</artifactId>
-                <version>${multi.model.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.springbootpractice.guava.study</groupId>
-                <artifactId>guava-api</artifactId>
-                <version>${multi.model.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.ctrip.framework.apollo</groupId>
@@ -171,8 +155,30 @@
                 <version>5.1.31</version>
                 <scope>runtime</scope>
             </dependency>
+
+
+
+            <dependency>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-biz</artifactId>
+                <version>${multi.model.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-dal</artifactId>
+                <version>${multi.model.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.springbootpractice.guava.study</groupId>
+                <artifactId>guava-api</artifactId>
+                <version>${multi.model.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

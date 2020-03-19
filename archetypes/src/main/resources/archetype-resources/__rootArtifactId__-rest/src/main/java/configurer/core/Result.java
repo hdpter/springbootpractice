@@ -1,4 +1,4 @@
-package com.xxx.demo.configurer.core;
+package ${package}.configurer.core;
 
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;

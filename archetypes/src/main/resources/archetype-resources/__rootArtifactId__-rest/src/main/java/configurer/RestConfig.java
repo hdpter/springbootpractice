@@ -1,26 +1,46 @@
 package ${package}.configurer;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import ${package}.configurer.core.Result;
+import ${package}.biz.configurer.core.ServiceException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * 说明：MVC配置
- * @author ${projectAuthor}
+ * @author 李福春
  * 创建时间： 2020年02月13日 9:57 上午
  **/
 @Configurable
 @RestControllerAdvice
-public class RestConfig  implements WebMvcConfigurer {
+@Slf4j
+public class RestConfig implements WebMvcConfigurer {
 
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
@@ -42,17 +62,19 @@ public class RestConfig  implements WebMvcConfigurer {
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
         exceptionResolvers.add(new HandlerExceptionResolver() {
+            @Override
             public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
                 Result result = new Result();
-                if (e instanceof ServiceException) {//业务失败的异常，如“账号或密码错误”
-                    result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
-                    logger.info(e.getMessage());
+                if (e instanceof ServiceException) {
+                    //业务失败的异常，如“账号或密码错误”
+                    result.setCode(Result.ResultCode.FAIL).setMessage(e.getMessage());
+                    log.info(e.getMessage());
                 } else if (e instanceof NoHandlerFoundException) {
-                    result.setCode(ResultCode.NOT_FOUND).setMessage("接口 [" + request.getRequestURI() + "] 不存在");
+                    result.setCode(Result.ResultCode.NOT_FOUND).setMessage("接口 [" + request.getRequestURI() + "] 不存在");
                 } else if (e instanceof ServletException) {
-                    result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
+                    result.setCode(Result.ResultCode.FAIL).setMessage(e.getMessage());
                 } else {
-                    result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
+                    result.setCode(Result.ResultCode.INTERNAL_SERVER_ERROR).setMessage("接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
                     String message;
                     if (handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -64,7 +86,7 @@ public class RestConfig  implements WebMvcConfigurer {
                     } else {
                         message = e.getMessage();
                     }
-                    logger.error(message, e);
+                    log.error(message, e);
                 }
                 responseResult(response, result);
                 return new ModelAndView();
@@ -83,7 +105,8 @@ public class RestConfig  implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //接口签名认证拦截器，该签名认证比较简单，实际项目中可以使用Json Web Token或其他更好的方式替代。
-        if (!"dev".equals(env)) { //开发环境忽略签名认证
+        if (!"dev".equals(System.getProperty("spring.profiles.active"))) {
+            //开发环境忽略签名认证
             registry.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
                 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -92,11 +115,11 @@ public class RestConfig  implements WebMvcConfigurer {
                     if (pass) {
                         return true;
                     } else {
-                        logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
+                        log.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
                                 request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
 
                         Result result = new Result();
-                        result.setCode(ResultCode.UNAUTHORIZED).setMessage("签名认证失败");
+                        result.setCode(Result.ResultCode.UNAUTHORIZED).setMessage("签名认证失败");
                         responseResult(response, result);
                         return false;
                     }
@@ -112,7 +135,7 @@ public class RestConfig  implements WebMvcConfigurer {
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException ex) {
-            logger.error(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -139,7 +162,7 @@ public class RestConfig  implements WebMvcConfigurer {
         linkString = StringUtils.substring(linkString, 0, linkString.length() - 1);//去除最后一个'&'
 
         String secret = "Potato";//密钥，自己修改
-        String sign = DigestUtils.md5Hex(linkString + secret);//混合密钥md5
+        String sign = DigestUtils.md5DigestAsHex((linkString + secret).getBytes());//混合密钥md5
 
         return StringUtils.equals(sign, requestSign);//比较
     }
@@ -168,7 +191,5 @@ public class RestConfig  implements WebMvcConfigurer {
 
         return ip;
     }
-
-
 
 }

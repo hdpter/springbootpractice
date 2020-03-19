@@ -27,12 +27,12 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.basePackage("${package}.web"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
-                        .title("saasuser")
-                        .description("saasuser")
+                        .title("${rootArtifactId}")
+                        .description("${rootArtifactId},对接后端请找 ${projectAuthor}")
                         .version("1.0")
-                        .contact(new Contact("${projectAuthor}.li","blog.csdn.net","505857426@qq.com"))
+                        .contact(new Contact("${projectAuthor}","blog.csdn.net","505857426@qq.com"))
                         .license("The Apache License")
-                        .licenseUrl("http://www.baidu.com")
+                        .licenseUrl("https://www.leshiguang.com")
                         .build());
     }
 }
