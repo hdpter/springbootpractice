@@ -8,13 +8,10 @@
 
     <requiredProperties>
         <requiredProperty key="groupId">
-            <defaultValue>com.xxx</defaultValue>
         </requiredProperty>
         <requiredProperty key="artifactId">
-            <defaultValue>demo-services</defaultValue>
         </requiredProperty>
         <requiredProperty key="package">
-            <defaultValue>com.xxx.demo</defaultValue>
         </requiredProperty>
         <requiredProperty key="version">
             <defaultValue>1.0-SNAPSHOT</defaultValue>
@@ -116,7 +113,7 @@
                         <include>**/*.*</include>
                     </includes>
                 </fileSet>
-                <fileSet filtered="true" encoding="UTF-8" packaged="false">
+                <fileSet filtered="true" encoding="UTF-8" packaged="true">
                     <directory>src/test/java</directory>
                     <includes>
                         <include>**/*.*</include>
@@ -124,6 +121,12 @@
                 </fileSet>
                 <fileSet filtered="true" encoding="UTF-8" packaged="false">
                     <directory>src/main/resources</directory>
+                    <includes>
+                        <include>**/*.*</include>
+                    </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8" packaged="false">
+                    <directory>src/test/resources</directory>
                     <includes>
                         <include>**/*.*</include>
                     </includes>
