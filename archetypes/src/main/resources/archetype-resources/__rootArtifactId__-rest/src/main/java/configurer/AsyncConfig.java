@@ -1,6 +1,5 @@
 package ${package}.configurer;
 
-import ${package}.biz.param.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(Runtime.getRuntime().availableProcessors());
         executor.setMaxPoolSize(executor.getCorePoolSize() * 2);
         executor.setQueueCapacity(10000 * executor.getCorePoolSize());
-        executor.setThreadNamePrefix(Constants.APP_NAME.concat("Executor-"));
+        executor.setThreadNamePrefix("${rootArtifactId}".concat("Executor-"));
         executor.initialize();
         return executor;
     }
