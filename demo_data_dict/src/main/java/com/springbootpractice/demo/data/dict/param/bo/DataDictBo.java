@@ -43,5 +43,8 @@ public class DataDictBo implements Serializable {
     @ApiModelProperty("表名")
     private String TABLE_NAME;
 
+    @ApiModelProperty("是否是主键，pri")
+    private String COLUMN_KEY;
+
 
 }
