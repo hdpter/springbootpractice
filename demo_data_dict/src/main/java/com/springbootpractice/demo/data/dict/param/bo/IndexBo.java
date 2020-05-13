@@ -24,16 +24,15 @@ public class IndexBo implements Serializable {
 
     private static final long serialVersionUID = 7134073475083387892L;
 
-
     @ApiModelProperty("索引的字段名称")
-    private String Column_name;
+    private String columnName;
 
     @ApiModelProperty("字段顺序")
-    private Integer Seq_in_index;
+    private Integer seqInIndex;
 
     @ApiModelProperty("索引名称")
-    private String Key_name;
+    private String IndexName;
 
     @ApiModelProperty("表名")
-    private String Table;
+    private String tableName;
 }

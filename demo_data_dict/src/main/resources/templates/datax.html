@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dataX配置脚本生成页面</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+<body>
+<table>
+    <tr>
+        <td>mysql连接url</td>
+        <td><input type="text" name="connectionUrl" value="jdbc:mysql://47.113.111.95:3306/cloudpivot" width="200"></td>
+        <td>username</td>
+        <td><input type="text" name="username" value="root"></td>
+        <td>password</td>
+        <td><input type="password" name="password" value="test123456!@#$%"></td>
+
+        <td><input type="button" value="连接数据库服务器获取数据库列表" id="testMysqlConnection"></td>
+        <td><select id="databaseName" name="databaseName">
+            <option>请选择Mysql数据库</option>
+        </select>
+        </td>
+        <td><input type="button" value="重置输入参数" id="resetMysqlInput"></td>
+    </tr>
+
+    <tr>
+        <td>oracle连接url</td>
+        <td><input type="text" name="oracleConnectionUrl" value="jdbc:oracle:thin:@47.107.241.221:1521:orcl" width="200"></td>
+        <td>username</td>
+        <td><input type="text" name="oracleUsername" value="DEV3"></td>
+        <td>password</td>
+        <td><input type="password" name="oraclePassword" value="H3password"></td>
+
+        <td><input type="button" value="连接数据库服务器获取数据库列表" id="testOracleConnection"></td>
+        <td><select id="oracleDatabaseName" name="oracleDatabaseName">
+            <option>请选择Oracle数据库</option>
+        </select>
+        </td>
+        <td><input type="button" value="重置输入参数" id="resetOracleInput"></td>
+    </tr>
+
+    <tr>
+        <td><input type="button" value="生成选定数据库的codex配置到文本框" id="generateDataXScript"></td>
+        <td><input type="button" value="生成选定数据库的codex配置文件" id="generateDataXFile"></td>
+        <td><input type="button" value="生成选定数据库的oracle初始化脚本" id="generateOracleSql"></td>
+    </tr>
+</table>
+
+<hr>
+<div>
+    <textarea id="markdownContent" rows="30" cols="200">
+    </textarea>
+</div>
+</body>
+<script type="text/javascript">
+    $("#resetMysqlInput").click(function () {
+        $("input[name='connectionUrl']").val("");
+        $("input[name='username']").val("");
+        $("input[name='password']").val("");
+        $("select[name='databaseName']").reset();
+    });
+    $("#resetOracleInput").click(function () {
+        $("input[name='oracleConnectionUrl']").val("");
+        $("input[name='oracleUsername']").val("");
+        $("input[name='oraclePassword']").val("");
+        $("select[name='oracleDatabaseName']").reset();
+    });
+    $("#testMysqlConnection").click(function () {
+        let connectionUrl = $("input[name='connectionUrl']").val();
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+        $("#databaseName").empty();
+        $.post("/testConnection",
+            {connectionUrl: connectionUrl, username: username, password: password},
+            function (data) {
+                $.each(data.data.databaseList, function (i, databaseName) {
+                    $("#databaseName").append("<option value='"+databaseName+"'>"+databaseName+"</option>");
+                })
+
+            }, "json");
+    });
+
+    $("#testOracleConnection").click(function () {
+        let connectionUrl = $("input[name='connectionUrl']").val();
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+        $.post("/testConnection",
+            {connectionUrl: connectionUrl, username: username, password: password},
+            function (data) {
+                var selectHtml = "";
+                $.each(data.data.databaseList, function (i, databaseName) {
+                    selectHtml += '<input  name="databaseName" type="checkbox" value="' + databaseName + '">' + databaseName;
+                    if (i % 12 == 0 && i > 0) {
+                        selectHtml += '<br>';
+                    }
+                })
+                $("#databaseSel").empty().append(selectHtml);
+            }, "json");
+    });
+
+    $("#generateDataXScript").click(function () {
+        let databaseName = $("#databaseName").find("option:selected").text();
+        let oracleDatabaseName = $("#oracleDatabaseName").find("option:selected").text();
+
+        let connectionUrl = $("input[name='connectionUrl']").val();
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+
+        let oracleConnectionUrl = $("input[name='oracleConnectionUrl']").val();
+        let oracleUsername = $("input[name='oracleUsername']").val();
+        let oraclePassword = $("input[name='oraclePassword']").val();
+
+        $.post("/datax/generateDataXJson",
+            {
+                mysqlDatabaseName: databaseName,
+                mysqlConnectionUrl: connectionUrl,
+                mysqlUsername: username,
+                mysqlPassword: password,
+                oracleDatabaseName: oracleDatabaseName,
+                oracleConnectionUrl: oracleConnectionUrl,
+                oracleUsername: oracleUsername,
+                oraclePassword: oraclePassword
+            },
+            function (data) {
+                var content = JSON.stringify(data.data);
+                $("#markdownContent").empty().val(content);
+            }, "json");
+    });
+
+    $("#generateOracleSql").click(function () {
+        let databaseName = $("#databaseName").find("option:selected").text();
+        let oracleDatabaseName = $("#oracleDatabaseName").find("option:selected").text();
+
+        let connectionUrl = $("input[name='connectionUrl']").val();
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+
+        let oracleConnectionUrl = $("input[name='oracleConnectionUrl']").val();
+        let oracleUsername = $("input[name='oracleUsername']").val();
+        let oraclePassword = $("input[name='oraclePassword']").val();
+
+        $.post("/datax/generateOracleSql",
+            {
+                mysqlDatabaseName: databaseName,
+                mysqlConnectionUrl: connectionUrl,
+                mysqlUsername: username,
+                mysqlPassword: password,
+                oracleDatabaseName: oracleDatabaseName,
+                oracleConnectionUrl: oracleConnectionUrl,
+                oracleUsername: oracleUsername,
+                oraclePassword: oraclePassword
+            },
+            function (data) {
+                var content = data.data.oracleSql;
+                $("#markdownContent").empty().val(content);
+            }, "json");
+    });
+
+    $("#generateDataXFile").click(function () {
+        let databaseName = $("#databaseName").find("option:selected").text();
+        let oracleDatabaseName = $("#oracleDatabaseName").find("option:selected").text();
+
+        let connectionUrl = $("input[name='connectionUrl']").val();
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+
+        let oracleConnectionUrl = $("input[name='oracleConnectionUrl']").val();
+        let oracleUsername = $("input[name='oracleUsername']").val();
+        let oraclePassword = $("input[name='oraclePassword']").val();
+
+        $.post("/datax/generateDataXJsonFile",
+            {
+                mysqlDatabaseName: databaseName,
+                mysqlConnectionUrl: connectionUrl,
+                mysqlUsername: username,
+                mysqlPassword: password,
+                oracleDatabaseName: oracleDatabaseName,
+                oracleConnectionUrl: oracleConnectionUrl,
+                oracleUsername: oracleUsername,
+                oraclePassword: oraclePassword
+            },
+            function (data) {
+                var content = data.data.oracleSql;
+                $("#markdownContent").empty().val(content);
+            }, "json");
+    });
+
+</script>
+</html>

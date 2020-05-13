@@ -1,5 +1,6 @@
 package com.springbootpractice.demo.data.dict.param.datax;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -55,8 +56,12 @@ public class Writer implements Serializable {
         @ApiModelProperty("行配置")
         private List<String> column = new LinkedList<>();
 
-        @ApiModelProperty("前置执行sql")
+        @ApiModelProperty("前置执行删除表数据sql")
         private List<String> preSql=new LinkedList<>();
+
+        @JsonIgnore
+        @ApiModelProperty("前置执行sql")
+        private List<String> preInitTableSql =new LinkedList<>();
 
         @ApiModelProperty("连接信息")
         private List<WriteConnection> connection = new LinkedList<>();

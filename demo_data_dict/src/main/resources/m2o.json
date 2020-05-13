@@ -1,0 +1,5114 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 4
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, workflowCode, workflowVersion, originator, participant, approval, sheetCode, instanceId, startTime, finishTime, state, receiveTime, activityCode, usedTime, remark, ownerId, activityName, departmentId, departmentName, instanceName, originatorName, participantName, sourceId, sourceName, workItemType, workflowTokenId, stateValue, workItemTypeValue, approvalValue, expireTime1, expireTime2, appCode, allowedTime, timeoutWarn1, timeoutWarn2, timeoutStrategy from biz_workitem;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "workflowCode",
+              "workflowVersion",
+              "originator",
+              "participant",
+              "approval",
+              "sheetCode",
+              "instanceId",
+              "startTime",
+              "finishTime",
+              "state",
+              "receiveTime",
+              "activityCode",
+              "usedTime",
+              "remark",
+              "ownerId",
+              "activityName",
+              "departmentId",
+              "departmentName",
+              "instanceName",
+              "originatorName",
+              "participantName",
+              "sourceId",
+              "sourceName",
+              "workItemType",
+              "workflowTokenId",
+              "stateValue",
+              "workItemTypeValue",
+              "approvalValue",
+              "expireTime1",
+              "expireTime2",
+              "appCode",
+              "allowedTime",
+              "timeoutWarn1",
+              "timeoutWarn2",
+              "timeoutStrategy"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_workitem"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, direction, if(isSystem=true,1,0) isSystem, name, propertyCode, propertyType, queryId, schemaCode, sortKey, name_i18n, clientType from h_biz_query_sorter;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "direction",
+              "isSystem",
+              "name",
+              "propertyCode",
+              "propertyType",
+              "queryId",
+              "schemaCode",
+              "sortKey",
+              "name_i18n",
+              "clientType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query_sorter"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, deptId, if(main=true,1,0) main, userId, sortKey, if(leader=true,1,0) leader, userSourceId, deptSourceId from h_org_dept_user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "deptId",
+              "main",
+              "userId",
+              "sortKey",
+              "leader",
+              "userSourceId",
+              "deptSourceId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_dept_user"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, if(disabled=true,1,0) disabled, logoUrlId, name, sortKey, if(published=true,1,0) published, agentId, logoUrl, appKey, appSecret, if(enabled=true,1,0) enabled, name_i18n, appNameSpace from h_app_package;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "disabled",
+              "logoUrlId",
+              "name",
+              "sortKey",
+              "published",
+              "agentId",
+              "logoUrl",
+              "appKey",
+              "appSecret",
+              "enabled",
+              "name_i18n",
+              "appNameSpace"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_app_package"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, modifiedTime, name from h_biz_service_category;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "modifiedTime",
+              "name"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_service_category"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, appCode, departments, roles, visibleType from h_perm_app_package;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "appCode",
+              "departments",
+              "roles",
+              "visibleType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_app_package"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, relativeCode, relativeType, workflowCode, workflowVersion from h_workflow_relative_object;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "relativeCode",
+              "relativeType",
+              "workflowCode",
+              "workflowVersion"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_workflow_relative_object"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, workitemId, recordId, requestId, receivers, title, content, url, receiveTime, tryTimes, failRetry, messageType, if(failUserRetry=true,1,0) failUserRetry, WorkRecordStatus, channel, bizParams, createdTime, modifiedTime from h_im_work_record;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "workitemId",
+              "recordId",
+              "requestId",
+              "receivers",
+              "title",
+              "content",
+              "url",
+              "receiveTime",
+              "tryTimes",
+              "failRetry",
+              "messageType",
+              "failUserRetry",
+              "WorkRecordStatus",
+              "channel",
+              "bizParams",
+              "createdTime",
+              "modifiedTime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_work_record"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, if(display=true,1,0) display, pageType, userId from h_user_guide;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "display",
+              "pageType",
+              "userId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_user_guide"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, draftAttributesJson, draftViewJson, icon, if(mobileIsPc=true,1,0) mobileIsPc, mobileUrl, name, pcUrl, if(printIsPc=true,1,0) printIsPc, printUrl, if(published=true,1,0) published, publishedAttributesJson, publishedViewJson, schemaCode, sheetType, sortKey, serialCode, serialResetType, if(externalLinkAble=true,1,0) externalLinkAble, name_i18n, draftHtmlJson, publishedHtmlJson, draftActionsJson, publishedActionsJson, shortCode, printTemplateJson, qrCodeAble, pdfAble, tempAuthSchemaCodes, borderMode, layoutType, if(formComment=true,1,0) formComment from h_biz_sheet;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "draftAttributesJson",
+              "draftViewJson",
+              "icon",
+              "mobileIsPc",
+              "mobileUrl",
+              "name",
+              "pcUrl",
+              "printIsPc",
+              "printUrl",
+              "published",
+              "publishedAttributesJson",
+              "publishedViewJson",
+              "schemaCode",
+              "sheetType",
+              "sortKey",
+              "serialCode",
+              "serialResetType",
+              "externalLinkAble",
+              "name_i18n",
+              "draftHtmlJson",
+              "publishedHtmlJson",
+              "draftActionsJson",
+              "publishedActionsJson",
+              "shortCode",
+              "printTemplateJson",
+              "qrCodeAble",
+              "pdfAble",
+              "tempAuthSchemaCodes",
+              "borderMode",
+              "layoutType",
+              "formComment"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_sheet"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_GROUP from QRTZ_PAUSED_TRIGGER_GRPS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_GROUP"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_PAUSED_TRIGGER_GRPS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, workitemId, recordId, requestId, receivers, title, content, url, receiveTime, tryTimes, failRetry, messageType, if(failUserRetry=true,1,0) failUserRetry, WorkRecordStatus, status, channel, bizParams, createdTime, modifiedTime, taskId from h_im_work_record_history;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "workitemId",
+              "recordId",
+              "requestId",
+              "receivers",
+              "title",
+              "content",
+              "url",
+              "receiveTime",
+              "tryTimes",
+              "failRetry",
+              "messageType",
+              "failUserRetry",
+              "WorkRecordStatus",
+              "status",
+              "channel",
+              "bizParams",
+              "createdTime",
+              "modifiedTime",
+              "taskId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_work_record_history"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, code, icon, if(pcAble=true,1,0) pcAble, name, if(mobileAble=true,1,0) mobileAble, appCode, name_i18n, reportObjectId from h_report_page;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "code",
+              "icon",
+              "pcAble",
+              "name",
+              "mobileAble",
+              "appCode",
+              "name_i18n",
+              "reportObjectId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_report_page"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, STR_PROP_1, STR_PROP_2, STR_PROP_3, INT_PROP_1, INT_PROP_2, LONG_PROP_1, LONG_PROP_2, DEC_PROP_1, DEC_PROP_2, BOOL_PROP_1, BOOL_PROP_2 from QRTZ_SIMPROP_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "STR_PROP_1",
+              "STR_PROP_2",
+              "STR_PROP_3",
+              "INT_PROP_1",
+              "INT_PROP_2",
+              "LONG_PROP_1",
+              "LONG_PROP_2",
+              "DEC_PROP_1",
+              "DEC_PROP_2",
+              "BOOL_PROP_1",
+              "BOOL_PROP_2"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_SIMPROP_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, if(enabled=true,1,0) enabled, name, name_i18n, roles, schemaCode, departments, authorType from h_biz_perm_group;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "enabled",
+              "name",
+              "name_i18n",
+              "roles",
+              "schemaCode",
+              "departments",
+              "authorType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_perm_group"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, instanceId, text, userId, opTime, urgeType, messageId from h_im_urge_task;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "instanceId",
+              "text",
+              "userId",
+              "opTime",
+              "urgeType",
+              "messageId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_urge_task"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, tempCode, processCode, processName, agentId, formField, createTime, requestId, bizProcessStatus, queryId from d_process_template;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "tempCode",
+              "processCode",
+              "processName",
+              "agentId",
+              "formField",
+              "createTime",
+              "requestId",
+              "bizProcessStatus",
+              "queryId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "d_process_template"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, browser, clientAgent, ipAddress, loginSourceType, loginTime, name, userId, username from h_log_login;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "browser",
+              "clientAgent",
+              "ipAddress",
+              "loginSourceType",
+              "loginTime",
+              "name",
+              "userId",
+              "username"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_log_login"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, jobName, beanName, methodName, methodParams, year, cronExpression, jobRunType, createTime, executeStatus, taskId from h_job_result;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "jobName",
+              "beanName",
+              "methodName",
+              "methodParams",
+              "year",
+              "cronExpression",
+              "jobRunType",
+              "createTime",
+              "executeStatus",
+              "taskId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_job_result"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, actionType, actionValue, lastValue, setValue, targetObjectId, targetPropertyCode, targetSchemaCode, triggerActionType, triggerId, triggerObjectId, triggerSchemaCode, targetTableType, targetTableCode, targetMainObjectId, targetMainObjectName, targetPropertyLastValue, targetPropertySetValue, targetPropertyName, targetPropertyType from h_biz_rule_effect;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "actionType",
+              "actionValue",
+              "lastValue",
+              "setValue",
+              "targetObjectId",
+              "targetPropertyCode",
+              "targetSchemaCode",
+              "triggerActionType",
+              "triggerId",
+              "triggerObjectId",
+              "triggerSchemaCode",
+              "targetTableType",
+              "targetTableCode",
+              "targetMainObjectId",
+              "targetMainObjectName",
+              "targetPropertyLastValue",
+              "targetPropertySetValue",
+              "targetPropertyName",
+              "targetPropertyType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_rule_effect"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, workitemId, userId, createTime, modifyTime, urgeCount from h_im_urge_workitem;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "workitemId",
+              "userId",
+              "createTime",
+              "modifyTime",
+              "urgeCount"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_urge_workitem"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, ENTRY_ID, TRIGGER_NAME, TRIGGER_GROUP, INSTANCE_NAME, FIRED_TIME, SCHED_TIME, PRIORITY, STATE, JOB_NAME, JOB_GROUP, IS_NONCONCURRENT, REQUESTS_RECOVERY from QRTZ_FIRED_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "ENTRY_ID",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "INSTANCE_NAME",
+              "FIRED_TIME",
+              "SCHED_TIME",
+              "PRIORITY",
+              "STATE",
+              "JOB_NAME",
+              "JOB_GROUP",
+              "IS_NONCONCURRENT",
+              "REQUESTS_RECOVERY"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_FIRED_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, if(creatable=true,1,0) creatable, dataPermissionType, if(deletable=true,1,0) deletable, if(editable=true,1,0) editable, if(exportable=true,1,0) exportable, filterType, functionCode, if(importable=true,1,0) importable, permissionGroupId, schemaCode, if(visible=true,1,0) visible, nodeType, if(printAble=true,1,0) printAble from h_perm_biz_function;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "creatable",
+              "dataPermissionType",
+              "deletable",
+              "editable",
+              "exportable",
+              "filterType",
+              "functionCode",
+              "importable",
+              "permissionGroupId",
+              "schemaCode",
+              "visible",
+              "nodeType",
+              "printAble"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_biz_function"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, if(isSystem=true,1,0) isSystem, name, propertyCode, propertyType, queryId, schemaCode, sortKey, sumType, unit, width, displayFormat, name_i18n, clientType from h_biz_query_column;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "isSystem",
+              "name",
+              "propertyCode",
+              "propertyType",
+              "queryId",
+              "schemaCode",
+              "sortKey",
+              "sumType",
+              "unit",
+              "width",
+              "displayFormat",
+              "name_i18n",
+              "clientType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query_column"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizParams, channel, content, createdTime, if(failRetry=true,1,0) failRetry, if(failUserRetry=true,1,0) failUserRetry, messageType, modifiedTime, receivers, title, tryTimes, url, sendFailUserIds, status, taskId from h_im_message_history;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizParams",
+              "channel",
+              "content",
+              "createdTime",
+              "failRetry",
+              "failUserRetry",
+              "messageType",
+              "modifiedTime",
+              "receivers",
+              "title",
+              "tryTimes",
+              "url",
+              "sendFailUserIds",
+              "status",
+              "taskId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_message_history"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, if(active=true,1,0) active, if(admin=true,1,0) admin, appellation, birthday, if(boss=true,1,0) boss, departmentId, departureDate, dingtalkId, email, employeeNo, employeeRank, entryDate, gender, identityNo, imgUrl, if(leader=true,1,0) leader, managerId, mobile, name, officePhone, password, username, privacyLevel, secretaryId, sortKey, sourceId, status, userId, pinYin, shortPinYin, imgUrlId, dingUserJson, corpId from h_org_user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "active",
+              "admin",
+              "appellation",
+              "birthday",
+              "boss",
+              "departmentId",
+              "departureDate",
+              "dingtalkId",
+              "email",
+              "employeeNo",
+              "employeeRank",
+              "entryDate",
+              "gender",
+              "identityNo",
+              "imgUrl",
+              "leader",
+              "managerId",
+              "mobile",
+              "name",
+              "officePhone",
+              "password",
+              "username",
+              "privacyLevel",
+              "secretaryId",
+              "sortKey",
+              "sourceId",
+              "status",
+              "userId",
+              "pinYin",
+              "shortPinYin",
+              "imgUrlId",
+              "dingUserJson",
+              "corpId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_user"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, finishTime, receiveTime, startTime, state, activityCode, approvalCount, disapprovalCount, exceptional, instanceId, itemCount, tokenId, usedtime, sourceActivityCode, isRetrievable, stateValue, parentId, isRejectBack, activityType, instanceState, approvalExit from biz_workflow_token;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "finishTime",
+              "receiveTime",
+              "startTime",
+              "state",
+              "activityCode",
+              "approvalCount",
+              "disapprovalCount",
+              "exceptional",
+              "instanceId",
+              "itemCount",
+              "tokenId",
+              "usedtime",
+              "sourceActivityCode",
+              "isRetrievable",
+              "stateValue",
+              "parentId",
+              "isRejectBack",
+              "activityType",
+              "instanceState",
+              "approvalExit"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_workflow_token"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizServiceStatus, code, createdTime, endTime, exception, methodName, options, params, result, server, startTime, usedTime, schemaCode, bizObjectId from h_log_biz_service;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizServiceStatus",
+              "code",
+              "createdTime",
+              "endTime",
+              "exception",
+              "methodName",
+              "options",
+              "params",
+              "result",
+              "server",
+              "startTime",
+              "usedTime",
+              "schemaCode",
+              "bizObjectId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_log_biz_service"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, conditionType, dateOption, dateType, depIds, if(enabled=true,1,0) enabled, filterType, intervalTime, msgTemplate, remindType, roleCondition, roleIds, schemaCode, sheetCode, userDataOptions, userIds from h_biz_remind;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "conditionType",
+              "dateOption",
+              "dateType",
+              "depIds",
+              "enabled",
+              "filterType",
+              "intervalTime",
+              "msgTemplate",
+              "remindType",
+              "roleCondition",
+              "roleIds",
+              "schemaCode",
+              "sheetCode",
+              "userDataOptions",
+              "userIds"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_remind"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createrName, detail, extData, fixNotes, fixedTime, fixer, fixerName, status, summary, workflowCode, workflowInstanceId, workflowInstanceName, workflowName, workflowVersion, createdTime from h_log_workflow_exception;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createrName",
+              "detail",
+              "extData",
+              "fixNotes",
+              "fixedTime",
+              "fixer",
+              "fixerName",
+              "status",
+              "summary",
+              "workflowCode",
+              "workflowInstanceId",
+              "workflowInstanceName",
+              "workflowName",
+              "workflowVersion",
+              "createdTime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_log_workflow_exception"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, schemaCode, workflowCode, bizMethodCode from h_workflow_relative_event;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "schemaCode",
+              "workflowCode",
+              "bizMethodCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_workflow_relative_event"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, client, detail, ip, operateNode, operationType, time, username, workflowInstanceId from h_log_biz_object;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "client",
+              "detail",
+              "ip",
+              "operateNode",
+              "operationType",
+              "time",
+              "username",
+              "workflowInstanceId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_log_biz_object"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, content, sortKey, userId from h_user_comment;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "content",
+              "sortKey",
+              "userId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_user_comment"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizKey, metaData, moduleName, objId, operateTime, operateType, operator from h_log_metadata;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizKey",
+              "metaData",
+              "moduleName",
+              "objId",
+              "operateTime",
+              "operateType",
+              "operator"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_log_metadata"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, accessTokenValiditySeconds, additionInformation, authorities, authorizedGrantTypes, autoApproveScopes, clientId, clientSecret, refreshTokenValiditySeconds, registeredRedirectUris, resourceIds, scopes, type from base_security_client;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "accessTokenValiditySeconds",
+              "additionInformation",
+              "authorities",
+              "authorizedGrantTypes",
+              "autoApproveScopes",
+              "clientId",
+              "clientSecret",
+              "refreshTokenValiditySeconds",
+              "registeredRedirectUris",
+              "resourceIds",
+              "scopes",
+              "type"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "base_security_client"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, startTime, endTime, message, taskStatus, exportResultStatus, userId, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, path from h_biz_export_task;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "startTime",
+              "endTime",
+              "message",
+              "taskStatus",
+              "exportResultStatus",
+              "userId",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "path"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_export_task"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, paramCode, pairValue from h_system_pair;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "paramCode",
+              "pairValue"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_system_pair"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, bizObjectKey, bizObjectType, userId, appCode from h_user_favorites;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "bizObjectKey",
+              "bizObjectType",
+              "userId",
+              "appCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_user_favorites"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizObjectId, instanceName, workflowCode, workflowVersion, originator, departmentId, participant, state, receiveTime, startTime, finishTime, usedTime, waitTime, remark, departmentName, originatorName, parentId, stateValue, workflowTokenId, appCode, sheetBizObjectId, sheetSchemaCode, sequenceNo from biz_workflow_instance;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizObjectId",
+              "instanceName",
+              "workflowCode",
+              "workflowVersion",
+              "originator",
+              "departmentId",
+              "participant",
+              "state",
+              "receiveTime",
+              "startTime",
+              "finishTime",
+              "usedTime",
+              "waitTime",
+              "remark",
+              "departmentName",
+              "originatorName",
+              "parentId",
+              "stateValue",
+              "workflowTokenId",
+              "appCode",
+              "sheetBizObjectId",
+              "sheetSchemaCode",
+              "sequenceNo"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_workflow_instance"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select Number1588163952304, Number1588164024801, Number1588164064339, id, parentId, sortKey from ihenq_Sheet1588163902119;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "Number1588163952304",
+              "Number1588164024801",
+              "Number1588164064339",
+              "id",
+              "parentId",
+              "sortKey"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "ihenq_Sheet1588163902119"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, choiceType, dataStatus, defaultState, defaultValue, displayType, endValue, if(isSystem=true,1,0) isSystem, name, options, propertyCode, propertyType, queryId, schemaCode, sortKey, startValue, userOptionType, if(visible=true,1,0) visible, relativeQueryCode, if(accurateSearch=true,1,0) accurateSearch, displayFormat, name_i18n, clientType, dateType from h_biz_query_condition;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "choiceType",
+              "dataStatus",
+              "defaultState",
+              "defaultValue",
+              "displayType",
+              "endValue",
+              "isSystem",
+              "name",
+              "options",
+              "propertyCode",
+              "propertyType",
+              "queryId",
+              "schemaCode",
+              "sortKey",
+              "startValue",
+              "userOptionType",
+              "visible",
+              "relativeQueryCode",
+              "accurateSearch",
+              "displayFormat",
+              "name_i18n",
+              "clientType",
+              "dateType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query_condition"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, callback, clientId, eventTarget, eventTargetType, eventType from h_open_api_event;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "callback",
+              "clientId",
+              "eventTarget",
+              "eventTargetType",
+              "eventType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_open_api_event"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, appCode, code, icon, name, parentId, sortKey, type, name_i18n, if(pcAble=true,1,0) pcAble, if(mobileAble=true,1,0) mobileAble from h_app_function;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "appCode",
+              "code",
+              "icon",
+              "name",
+              "parentId",
+              "sortKey",
+              "type",
+              "name_i18n",
+              "pcAble",
+              "mobileAble"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_app_function"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, paramCode, paramValue, settingType from h_system_setting_copy;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "paramCode",
+              "paramValue",
+              "settingType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_system_setting_copy"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, processInstanceId, taskId, userId, url, wfWorkItemId, wfInstanceId, status, result, createTime, requestId, bizProcessStatus from d_process_task;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "processInstanceId",
+              "taskId",
+              "userId",
+              "url",
+              "wfWorkItemId",
+              "wfInstanceId",
+              "status",
+              "result",
+              "createTime",
+              "requestId",
+              "bizProcessStatus"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "d_process_task"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, if(defaultProperty=true,1,0) defaultProperty, defaultValue, name, if(propertyEmpty=true,1,0) propertyEmpty, if(propertyIndex=true,1,0) propertyIndex, propertyLength, propertyType, if(published=true,1,0) published, relativeCode, schemaCode, name_i18n, sortKey, relativePropertyCode from h_biz_property;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "defaultProperty",
+              "defaultValue",
+              "name",
+              "propertyEmpty",
+              "propertyIndex",
+              "propertyLength",
+              "propertyType",
+              "published",
+              "relativeCode",
+              "schemaCode",
+              "name_i18n",
+              "sortKey",
+              "relativePropertyCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_property"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, extend1, extend2, extend3, extend4, extend5, calendarId, employees, if(leaf=true,1,0) leaf, managerId, name, parentId, queryCode, sortKey, sourceId, targetParentId, targetQueryCode, changeTime, version, changeAction, corpId from h_org_department_history;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "calendarId",
+              "employees",
+              "leaf",
+              "managerId",
+              "name",
+              "parentId",
+              "queryCode",
+              "sortKey",
+              "sourceId",
+              "targetParentId",
+              "targetQueryCode",
+              "changeTime",
+              "version",
+              "changeAction",
+              "corpId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_department_history"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA from QRTZ_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "JOB_NAME",
+              "JOB_GROUP",
+              "DESCRIPTION",
+              "NEXT_FIRE_TIME",
+              "PREV_FIRE_TIME",
+              "PRIORITY",
+              "TRIGGER_STATE",
+              "TRIGGER_TYPE",
+              "START_TIME",
+              "END_TIME",
+              "CALENDAR_NAME",
+              "MISFIRE_INSTR",
+              "JOB_DATA"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, icon, if(mobileOriginate=true,1,0) mobileOriginate, if(pcOriginate=true,1,0) pcOriginate, schemaCode, sortKey, workflowCode, workflowName, if(published=true,1,0) published, name_i18n from h_workflow_header;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "icon",
+              "mobileOriginate",
+              "pcOriginate",
+              "schemaCode",
+              "sortKey",
+              "workflowCode",
+              "workflowName",
+              "published",
+              "name_i18n"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_workflow_header"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, BLOB_DATA from QRTZ_BLOB_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "BLOB_DATA"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_BLOB_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, bizPermType, groupId, name, name_i18n, propertyCode, propertyType, if(required=true,1,0) required, if(visible=true,1,0) visible, if(writeAble=true,1,0) writeAble, schemaCode from h_biz_perm_property;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "bizPermType",
+              "groupId",
+              "name",
+              "name_i18n",
+              "propertyCode",
+              "propertyType",
+              "required",
+              "visible",
+              "writeAble",
+              "schemaCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_perm_property"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, processCode, originator, title, url, processInstanceId, wfInstanceId, formComponents, status, result, createTime, requestId, wfWorkItemId, bizProcessStatus from d_process_instance;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "processCode",
+              "originator",
+              "title",
+              "url",
+              "processInstanceId",
+              "wfInstanceId",
+              "formComponents",
+              "status",
+              "result",
+              "createTime",
+              "requestId",
+              "wfWorkItemId",
+              "bizProcessStatus"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "d_process_instance"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, paramCode, paramValue, settingType, if(checked=true,1,0) checked, fileUploadType from h_system_setting;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "paramCode",
+              "paramValue",
+              "settingType",
+              "checked",
+              "fileUploadType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_system_setting"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, maxLength, resetDate, resetType, serialNo from h_system_sequence_no;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "maxLength",
+              "resetDate",
+              "resetType",
+              "serialNo"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_system_sequence_no"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, unitId, unitType, workflowCode from h_workflow_permission;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "unitId",
+              "unitType",
+              "workflowCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_workflow_permission"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, CALENDAR_NAME, CALENDAR from QRTZ_CALENDARS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "CALENDAR_NAME",
+              "CALENDAR"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_CALENDARS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizObjectId, schemaCode, commentId, fileExtension, fileSize, mimeType, name, refId, createdTime, creater from h_from_comment_attachment;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizObjectId",
+              "schemaCode",
+              "commentId",
+              "fileExtension",
+              "fileSize",
+              "mimeType",
+              "name",
+              "refId",
+              "createdTime",
+              "creater"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_from_comment_attachment"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, appCode, departments, name, roles, authorType from h_perm_group;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "appCode",
+              "departments",
+              "name",
+              "roles",
+              "authorType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_group"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID from QRTZ_CRON_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "CRON_EXPRESSION",
+              "TIME_ZONE_ID"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_CRON_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, code, if(defaultGroup=true,1,0) defaultGroup, name, roleId, sortKey, sourceId, roleType, corpId from h_org_role_group;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "defaultGroup",
+              "name",
+              "roleId",
+              "sortKey",
+              "sourceId",
+              "roleType",
+              "corpId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_role_group"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, actionCode, associationCode, associationType, if(customService=true,1,0) customService, icon, name, queryActionType, queryId, schemaCode, serviceCode, serviceMethod, sortKey, if(systemAction=true,1,0) systemAction, name_i18n, clientType from h_biz_query_action;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "actionCode",
+              "associationCode",
+              "associationType",
+              "customService",
+              "icon",
+              "name",
+              "queryActionType",
+              "queryId",
+              "schemaCode",
+              "serviceCode",
+              "serviceMethod",
+              "sortKey",
+              "systemAction",
+              "name_i18n",
+              "clientType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query_action"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, bizMethodId, inputMappingsJson, methodCode, outputMappingsJson, schemaCode, serviceCode, serviceMethodCode from h_biz_method_mapping;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "bizMethodId",
+              "inputMappingsJson",
+              "methodCode",
+              "outputMappingsJson",
+              "schemaCode",
+              "serviceCode",
+              "serviceMethodCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_method_mapping"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, INSTANCE_NAME, LAST_CHECKIN_TIME, CHECKIN_INTERVAL from QRTZ_SCHEDULER_STATE;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "INSTANCE_NAME",
+              "LAST_CHECKIN_TIME",
+              "CHECKIN_INTERVAL"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_SCHEDULER_STATE"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizObjectId, bizPropertyCode, createdTime, creater, fileExtension, fileSize, mimeType, name, parentBizObjectId, parentSchemaCode, refId, schemaCode from h_biz_attachment;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizObjectId",
+              "bizPropertyCode",
+              "createdTime",
+              "creater",
+              "fileExtension",
+              "fileSize",
+              "mimeType",
+              "name",
+              "parentBizObjectId",
+              "parentSchemaCode",
+              "refId",
+              "schemaCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_attachment"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, LOCK_NAME from QRTZ_LOCKS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "LOCK_NAME"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_LOCKS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, icon, name, if(published=true,1,0) published, summary, name_i18n from h_biz_schema;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "icon",
+              "name",
+              "published",
+              "summary",
+              "name_i18n"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_schema"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, calendarId, employees, if(leaf=true,1,0) leaf, managerId, name, parentId, sortKey, sourceId, queryCode, dingDeptManagerId, if(isShow=true,1,0) isShow, deptType, corpId from h_org_department;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "calendarId",
+              "employees",
+              "leaf",
+              "managerId",
+              "name",
+              "parentId",
+              "sortKey",
+              "sourceId",
+              "queryCode",
+              "dingDeptManagerId",
+              "isShow",
+              "deptType",
+              "corpId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_department"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, workflowCode, workflowVersion, originator, participant, approval, sheetCode, instanceId, startTime, finishTime, state, receiveTime, activityCode, usedTime, remark, ownerId, activityName, departmentId, departmentName, instanceName, originatorName, participantName, sourceId, sourceName, workItemType, workflowTokenId, stateValue, workItemTypeValue, approvalValue, expireTime1, expireTime2, appCode, allowedTime, timeoutWarn1, timeoutWarn2, timeoutStrategy from biz_workitem_finished;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "workflowCode",
+              "workflowVersion",
+              "originator",
+              "participant",
+              "approval",
+              "sheetCode",
+              "instanceId",
+              "startTime",
+              "finishTime",
+              "state",
+              "receiveTime",
+              "activityCode",
+              "usedTime",
+              "remark",
+              "ownerId",
+              "activityName",
+              "departmentId",
+              "departmentName",
+              "instanceName",
+              "originatorName",
+              "participantName",
+              "sourceId",
+              "sourceName",
+              "workItemType",
+              "workflowTokenId",
+              "stateValue",
+              "workItemTypeValue",
+              "approvalValue",
+              "expireTime1",
+              "expireTime2",
+              "appCode",
+              "allowedTime",
+              "timeoutWarn1",
+              "timeoutWarn2",
+              "timeoutStrategy"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_workitem_finished"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, conditionJoinType, if(enabled=true,1,0) enabled, name, ruleActionJson, ruleScopeJson, sourceSchemaCode, targetSchemaCode, triggerActionType, triggerConditionType, triggerSchemaCode, chooseAction, dataConditionJoinType, dataConditionJson, targetTableCode, ruleScopeChildJson, ruleActionMainScopeJson, insertConditionJoinType, if(triggerSchemaCodeIsGroup=true,1,0) triggerSchemaCodeIsGroup from h_biz_rule;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "conditionJoinType",
+              "enabled",
+              "name",
+              "ruleActionJson",
+              "ruleScopeJson",
+              "sourceSchemaCode",
+              "targetSchemaCode",
+              "triggerActionType",
+              "triggerConditionType",
+              "triggerSchemaCode",
+              "chooseAction",
+              "dataConditionJoinType",
+              "dataConditionJson",
+              "targetTableCode",
+              "ruleScopeChildJson",
+              "ruleActionMainScopeJson",
+              "insertConditionJoinType",
+              "triggerSchemaCodeIsGroup"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_rule"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, agentId, appSecret, appkey, corpId, corpSecret, exportHost, extend1, extend2, extend3, extend4, extend5, headerNum, name, orgType, relatedType, scanAppId, scanAppSecret, redirectUri, synRedirectUri, pcServerUrl, mobileServerUrl, syncType from h_related_corp_setting;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "agentId",
+              "appSecret",
+              "appkey",
+              "corpId",
+              "corpSecret",
+              "exportHost",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "headerNum",
+              "name",
+              "orgType",
+              "relatedType",
+              "scanAppId",
+              "scanAppSecret",
+              "redirectUri",
+              "synRedirectUri",
+              "pcServerUrl",
+              "mobileServerUrl",
+              "syncType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_related_corp_setting"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, configJSON, description, inputParametersJson, name, outputParametersJson, protocolAdapterType, serviceCode from h_biz_service_method;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "configJSON",
+              "description",
+              "inputParametersJson",
+              "name",
+              "outputParametersJson",
+              "protocolAdapterType",
+              "serviceCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_service_method"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizParams, channel, content, createdTime, if(failRetry=true,1,0) failRetry, if(failUserRetry=true,1,0) failUserRetry, messageType, modifiedTime, receivers, title, tryTimes, url from h_im_message;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizParams",
+              "channel",
+              "content",
+              "createdTime",
+              "failRetry",
+              "failUserRetry",
+              "messageType",
+              "modifiedTime",
+              "receivers",
+              "title",
+              "tryTimes",
+              "url"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_im_message"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, name, creater, createdDeptId, owner, ownerDeptId, createdTime, modifier, modifiedTime, workflowInstanceId, sequenceNo, sequenceStatus, ownerDeptQueryCode, StaffSelector1588163761767, LongText1588163770614, Date1588163787619, Date1588163791502, Address1588163824638, LongText1588163864545, LongText1588163878491, Number1588164059095 from ihenq_chucai_baoxiao;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "name",
+              "creater",
+              "createdDeptId",
+              "owner",
+              "ownerDeptId",
+              "createdTime",
+              "modifier",
+              "modifiedTime",
+              "workflowInstanceId",
+              "sequenceNo",
+              "sequenceStatus",
+              "ownerDeptQueryCode",
+              "StaffSelector1588163761767",
+              "LongText1588163770614",
+              "Date1588163787619",
+              "Date1588163791502",
+              "Address1588163824638",
+              "LongText1588163864545",
+              "LongText1588163878491",
+              "Number1588164059095"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "ihenq_chucai_baoxiao"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, targetType, trackId, targetId, errorType from h_org_synchronize_log;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "targetType",
+              "trackId",
+              "targetId",
+              "errorType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_synchronize_log"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, operatorType, propertyCode, schemaCode, value, functionId from h_perm_function_condition;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "operatorType",
+              "propertyCode",
+              "schemaCode",
+              "value",
+              "functionId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_function_condition"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, ouScope, roleId, userId, userSourceId, roleSourceId, unitType, deptId from h_org_role_user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "ouScope",
+              "roleId",
+              "userId",
+              "userSourceId",
+              "roleSourceId",
+              "unitType",
+              "deptId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_role_user"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, conditionJoinType, ruleId, ruleName, targetSchemaCode, triggerActionType, triggerConditionType, triggerObjectId, triggerSchemaCode, triggerMainObjectId, triggerMainObjectName, triggerTableType, sourceAppCode, sourceAppName, sourceSchemaCode, sourceSchemaName, targetSchemaName, targetTableCode, if(success=true,1,0) success, failLog, if(effect=true,1,0) effect from h_biz_rule_trigger;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "conditionJoinType",
+              "ruleId",
+              "ruleName",
+              "targetSchemaCode",
+              "triggerActionType",
+              "triggerConditionType",
+              "triggerObjectId",
+              "triggerSchemaCode",
+              "triggerMainObjectId",
+              "triggerMainObjectName",
+              "triggerTableType",
+              "sourceAppCode",
+              "sourceAppName",
+              "sourceSchemaCode",
+              "sourceSchemaName",
+              "targetSchemaName",
+              "targetTableCode",
+              "success",
+              "failLog",
+              "effect"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_rule_trigger"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, content, commentator, commentatorName, departmentId, schemaCode, bizObjectId, replyCommentId, replyUserId, replyUserName, originCommentId, floor, state, deleted, attachmentNum, modifier, createdTime, modifiedTime, text from h_form_comment;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "content",
+              "commentator",
+              "commentatorName",
+              "departmentId",
+              "schemaCode",
+              "bizObjectId",
+              "replyCommentId",
+              "replyUserId",
+              "replyUserName",
+              "originCommentId",
+              "floor",
+              "state",
+              "deleted",
+              "attachmentNum",
+              "modifier",
+              "createdTime",
+              "modifiedTime",
+              "text"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_form_comment"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, adminType, if(dataManage=true,1,0) dataManage, if(dataQuery=true,1,0) dataQuery, userId from h_perm_admin;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "adminType",
+              "dataManage",
+              "dataQuery",
+              "userId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_admin"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, adminId, code, name from h_perm_apppackage_scope;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "adminId",
+              "code",
+              "name"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_apppackage_scope"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, bizId, bizType, createdTime from h_perm_license;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "bizId",
+              "bizType",
+              "createdTime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_license"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, content, templateType, workflowCode, workflowVersion from h_workflow_template;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "content",
+              "templateType",
+              "workflowCode",
+              "workflowVersion"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_workflow_template"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, REPEAT_COUNT, REPEAT_INTERVAL, TIMES_TRIGGERED from QRTZ_SIMPLE_TRIGGERS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "TRIGGER_NAME",
+              "TRIGGER_GROUP",
+              "REPEAT_COUNT",
+              "REPEAT_INTERVAL",
+              "TIMES_TRIGGERED"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_SIMPLE_TRIGGERS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, configJSON, description, name, serviceCategoryId, adapterCode from h_biz_service;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "configJSON",
+              "description",
+              "name",
+              "serviceCategoryId",
+              "adapterCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_service"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, userId, leastUse, accessToken, createTime from h_access_token;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "userId",
+              "leastUse",
+              "accessToken",
+              "createTime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_access_token"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select finishTime, receiveTime, startTime, state, activityCode, delegant, instanceId, originator, participant, sheetCode, sourceWorkItemId, workflowCode, workflowVersion, id, activityName, departmentId, departmentName, instanceName, originatorName, participantName, sourceId, sourceName, workItemType, workflowTokenId, stateValue, workItemTypeValue, expireTime1, expireTime2, appCode, allowedTime, timeoutWarn1, timeoutWarn2, timeoutStrategy, usedtime from biz_circulateitem_finished;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "finishTime",
+              "receiveTime",
+              "startTime",
+              "state",
+              "activityCode",
+              "delegant",
+              "instanceId",
+              "originator",
+              "participant",
+              "sheetCode",
+              "sourceWorkItemId",
+              "workflowCode",
+              "workflowVersion",
+              "id",
+              "activityName",
+              "departmentId",
+              "departmentName",
+              "instanceName",
+              "originatorName",
+              "participantName",
+              "sourceId",
+              "sourceName",
+              "workItemType",
+              "workflowTokenId",
+              "stateValue",
+              "workItemTypeValue",
+              "expireTime1",
+              "expireTime2",
+              "appCode",
+              "allowedTime",
+              "timeoutWarn1",
+              "timeoutWarn2",
+              "timeoutStrategy",
+              "usedtime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_circulateitem_finished"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, code, icon, mobileUrl, name, openMode, pcUrl, appCode, name_i18n from h_custom_page;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "code",
+              "icon",
+              "mobileUrl",
+              "name",
+              "openMode",
+              "pcUrl",
+              "appCode",
+              "name_i18n"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_custom_page"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, jobName, beanName, methodName, methodParams, year, cronExpression, status, jobRunType, remark, createTime, updateTime, taskId from h_timer_job;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "jobName",
+              "beanName",
+              "methodName",
+              "methodParams",
+              "year",
+              "cronExpression",
+              "status",
+              "jobRunType",
+              "remark",
+              "createTime",
+              "updateTime",
+              "taskId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_timer_job"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA from QRTZ_JOB_DETAILS;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "SCHED_NAME",
+              "JOB_NAME",
+              "JOB_GROUP",
+              "DESCRIPTION",
+              "JOB_CLASS_NAME",
+              "IS_DURABLE",
+              "IS_NONCONCURRENT",
+              "IS_UPDATE_DATA",
+              "REQUESTS_RECOVERY",
+              "JOB_DATA"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "QRTZ_JOB_DETAILS"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, queryId, schemaCode, clientType, htmlJson, actionsJson, columnsJson from h_biz_query_present;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "queryId",
+              "schemaCode",
+              "clientType",
+              "htmlJson",
+              "actionsJson",
+              "columnsJson"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query_present"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, actionType, activityCode, activityName, bizObjectId, bizPropertyCode, content, createdTime, creater, modifiedTime, modifier, relUsers, result, schemaCode, workItemId, workflowInstanceId, workflowTokenId, tokenId from h_biz_comment;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "actionType",
+              "activityCode",
+              "activityName",
+              "bizObjectId",
+              "bizPropertyCode",
+              "content",
+              "createdTime",
+              "creater",
+              "modifiedTime",
+              "modifier",
+              "relUsers",
+              "result",
+              "schemaCode",
+              "workItemId",
+              "workflowInstanceId",
+              "workflowTokenId",
+              "tokenId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_comment"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, code, if(defaultMethod=true,1,0) defaultMethod, description, methodType, name, schemaCode from h_biz_method;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "code",
+              "defaultMethod",
+              "description",
+              "methodType",
+              "name",
+              "schemaCode"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_method"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, finishTime, receiveTime, startTime, state, activityCode, activityCodeName, instanceId, instanceName, originator, originatorName, participant, participantName, sheetCode, sourceId, sourceName, workflowCode, workflowVersion, activityName, departmentId, departmentName, workItemType, workflowTokenId, stateValue, workItemTypeValue, expireTime1, expireTime2, appCode, allowedTime, timeoutWarn1, timeoutWarn2, timeoutStrategy, usedtime from biz_circulateitem;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "finishTime",
+              "receiveTime",
+              "startTime",
+              "state",
+              "activityCode",
+              "activityCodeName",
+              "instanceId",
+              "instanceName",
+              "originator",
+              "originatorName",
+              "participant",
+              "participantName",
+              "sheetCode",
+              "sourceId",
+              "sourceName",
+              "workflowCode",
+              "workflowVersion",
+              "activityName",
+              "departmentId",
+              "departmentName",
+              "workItemType",
+              "workflowTokenId",
+              "stateValue",
+              "workItemTypeValue",
+              "expireTime1",
+              "expireTime2",
+              "appCode",
+              "allowedTime",
+              "timeoutWarn1",
+              "timeoutWarn2",
+              "timeoutStrategy",
+              "usedtime"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "biz_circulateitem"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, modifiedTime, modifier, remarks, code, icon, name, schemaCode, sortKey, name_i18n, queryPresentationType, if(showOnPc=true,1,0) showOnPc, if(showOnMobile=true,1,0) showOnMobile, if(publish=true,1,0) publish from h_biz_query;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "icon",
+              "name",
+              "schemaCode",
+              "sortKey",
+              "name_i18n",
+              "queryPresentationType",
+              "showOnPc",
+              "showOnMobile",
+              "publish"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_biz_query"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, code, groupId, name, sortKey, sourceId, roleType, corpId from h_org_role;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "createdTime",
+              "creater",
+              "deleted",
+              "extend1",
+              "extend2",
+              "extend3",
+              "extend4",
+              "extend5",
+              "modifiedTime",
+              "modifier",
+              "remarks",
+              "code",
+              "groupId",
+              "name",
+              "sortKey",
+              "sourceId",
+              "roleType",
+              "corpId"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_org_role"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "test123456!@#$%",
+            "connection": [
+              {
+                "querySql": [
+                  "select id, creater, createdTime, if(deleted=true,1,0) deleted, modifier, modifiedTime, remarks, adminId, name, queryCode, unitId, unitType from h_perm_department_scope;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "oraclewriter",
+          "parameter": {
+            "username": "DEV3",
+            "password": "H3password",
+            "truncate": "true",
+            "batchSize": "128",
+            "column": [
+              "id",
+              "creater",
+              "createdTime",
+              "deleted",
+              "modifier",
+              "modifiedTime",
+              "remarks",
+              "adminId",
+              "name",
+              "queryCode",
+              "unitId",
+              "unitType"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "table": [
+                  "h_perm_department_scope"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

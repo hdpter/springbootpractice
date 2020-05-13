@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author     carter
@@ -35,8 +36,8 @@ public class CompareTableCountRestRes implements Serializable {
     private String msg;
 
     @ApiModelProperty("如果数量对不上，mysql独有的表")
-    private String mysqlOwnTable;
+    private List<String> mysqlOwnTable;
 
     @ApiModelProperty("如果数量对不上，oracle独有的表")
-    private String oracleOwnTable;
+    private List<String> oracleOwnTable;
 }

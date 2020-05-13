@@ -22,8 +22,11 @@ import java.io.Serializable;
 public class CompareTableDataCountRestRes implements Serializable {
     private static final long serialVersionUID = -6500261235292953660L;
 
-    @ApiModelProperty("表名，统一小写")
-    private String tableName;
+    @ApiModelProperty("mysql表名")
+    private String mysqlTableName;
+
+    @ApiModelProperty("oracle表名")
+    private String oracleTableName;
 
     @ApiModelProperty("mysql的表对应的数据总数")
     private Long mysqlTableDataCount;

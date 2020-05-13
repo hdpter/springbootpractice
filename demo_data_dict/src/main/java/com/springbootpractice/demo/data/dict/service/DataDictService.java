@@ -2,18 +2,21 @@ package com.springbootpractice.demo.data.dict.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.springbootpractice.demo.data.dict.dao.MysqlDao;
+import com.springbootpractice.demo.data.dict.param.bo.ColumnBo;
 import com.springbootpractice.demo.data.dict.param.bo.ColumnTypeBo;
-import com.springbootpractice.demo.data.dict.param.bo.DataDictBo;
 import com.springbootpractice.demo.data.dict.param.bo.IndexBo;
 import com.springbootpractice.demo.data.dict.param.bo.TableBo;
 import com.springbootpractice.demo.data.dict.param.datax.DataXConfigBean;
 import com.springbootpractice.demo.data.dict.param.datax.Reader;
 import com.springbootpractice.demo.data.dict.param.datax.Writer;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -23,102 +26,33 @@ import java.util.stream.Collectors;
  * 创建时间： 2020年02月03日 4:46 下午
  **/
 @Service
+@Slf4j
 public class DataDictService {
 
-    private static Connection connection;
+    public final MysqlDao mysqlDao;
 
-    private static final String SQL_SCHEMA = "select SCHEMA_NAME from information_schema.SCHEMATA";
-    private static final String SQL_TABLE = "" +
-            "" +
-            "";
-    private static final String SQL_DATA_DICT = "select COLUMN_NAME,COLUMN_TYPE,COLUMN_KEY,COLUMN_COMMENT,EXTRA,IS_NULLABLE,COLUMN_DEFAULT,TABLE_NAME " +
-            "from information_schema.COLUMNS WHERE TABLE_SCHEMA=? " +
-            "ORDER BY TABLE_NAME DESC , ORDINAL_POSITION ASC ";
 
-    private static final String SQL_INDEX = "show index from ? ";
+    public DataDictService(MysqlDao mysqlDao) {
+        this.mysqlDao = mysqlDao;
+    }
+
 
     public List<String> getConnectionDatabaseList(String connectionUrl, String username, String password) {
 
-        List<String> databaseNameList = Lists.newLinkedList();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(connectionUrl, username, password);
-            //查询得到所有的数据的名称
-            preparedStatement = connection.prepareStatement(SQL_SCHEMA);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                databaseNameList.add(resultSet.getString(1));
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (Objects.nonNull(resultSet)) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (Objects.nonNull(preparedStatement)) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return databaseNameList;
+        mysqlDao.rebuildDataSource(connectionUrl, username, password);
+        return mysqlDao.getConnectionDatabaseList();
     }
 
-    private Map<String, TableBo> getTableBoMap(String databaseName) {
-        Map<String, TableBo> tableBoMap = Maps.newHashMap();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            //查询得到所有的数据的名称
-            preparedStatement = connection.prepareStatement(SQL_TABLE, new int[1]);
-            preparedStatement.setString(1, databaseName);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                TableBo tableBo = TableBo.builder()
-                        .TABLE_NAME(resultSet.getString("TABLE_NAME"))
-                        .TABLE_COMMENT(resultSet.getString("TABLE_COMMENT"))
-                        .ENGINE(resultSet.getString("ENGINE"))
-                        .build();
-                tableBoMap.put(tableBo.getTABLE_NAME(), tableBo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (Objects.nonNull(resultSet)) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (Objects.nonNull(preparedStatement)) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return tableBoMap;
-    }
 
     public String generateDataDict(String databaseName) {
 
-        Map<String, TableBo> tableBoMap = getTableBoMap(databaseName);
+        Map<String, TableBo> tableBoMap = mysqlDao.getTableBoMap(databaseName);
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("# ").append(databaseName).append("\n");
         stringBuilder.append("> ").append(databaseName).append("\n");
 
-        Map<String, List<DataDictBo>> map = getTableNameDataDictBoListMap(databaseName);
+        Map<String, List<ColumnBo>> map = mysqlDao.getTableNameDataDictBoListMap(databaseName);
         stringBuilder.append("> 表数量：").append(map.keySet().size()).append("\n");
         map.forEach((k, v) -> {
             final TableBo tableBo = tableBoMap.get(k);
@@ -144,117 +78,6 @@ public class DataDictService {
         return stringBuilder.toString();
     }
 
-    private Map<String, List<DataDictBo>> getTableNameDataDictBoListMap(String databaseName) {
-
-        List<DataDictBo> dataDictBoList = Lists.newLinkedList();
-
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            //查询得到所有的数据的名称
-            preparedStatement = connection.prepareStatement(SQL_DATA_DICT, new int[1]);
-            preparedStatement.setString(1, databaseName);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                DataDictBo dataDictBo = DataDictBo.builder()
-                        .COLUMN_NAME(resultSet.getString("COLUMN_NAME"))
-                        .COLUMN_TYPE(resultSet.getString("COLUMN_TYPE"))
-                        .COLUMN_COMMENT(resultSet.getString("COLUMN_COMMENT"))
-                        .COLUMN_DEFAULT(resultSet.getString("COLUMN_DEFAULT"))
-                        .IS_NULLABLE(resultSet.getString("IS_NULLABLE"))
-                        .EXTRA(resultSet.getString("EXTRA"))
-                        .TABLE_NAME(resultSet.getString("TABLE_NAME"))
-                        .COLUMN_KEY(resultSet.getString("COLUMN_KEY"))
-                        .build();
-                dataDictBoList.add(dataDictBo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (Objects.nonNull(resultSet)) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (Objects.nonNull(preparedStatement)) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return new TreeMap<>(dataDictBoList.stream().collect(Collectors.groupingBy(DataDictBo::getTABLE_NAME)));
-
-    }
-
-    private Map<String, List<IndexBo>> getIndexNameIndexBoListMap(String databaseName, String tableName) {
-
-        List<IndexBo> indexBoList = Lists.newLinkedList();
-
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            //查询得到所有的数据的名称
-//            preparedStatement = connection.prepareStatement(SQL_INDEX, new int[1]);
-//            preparedStatement.setString(1, databaseName+"."+tableName);
-            resultSet =  connection.getMetaData().getIndexInfo(databaseName, databaseName,tableName , false, true);
-//            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-
-//                AtomicInteger i = new AtomicInteger(1);
-//                for(;i.get()<12;)
-//                {
-//                    System.out.print(resultSet.getString(i.getAndIncrement()) +" ="+i.get()+", ");
-//                }
-//
-//                System.out.println("=========");
-
-//                IndexBo dataDictBo = IndexBo.builder()
-//                        .Column_name(resultSet.getString("Column_name"))
-////                        .Index_comment(resultSet.getString("Index_comment"))
-//                        .Key_name(resultSet.getString("Key_name"))
-//                        .Non_unique(resultSet.getInt("NON_UNIQUE"))
-//                        .Seq_in_index(resultSet.getInt("Seq_in_index"))
-//                        .Table(resultSet.getString("TABLE_NAME"))
-//                        .build();
-
-                IndexBo dataDictBo = IndexBo.builder()
-                        .Column_name(resultSet.getString(9))
-                        .Key_name(resultSet.getString(6))
-                        .Seq_in_index(resultSet.getInt(8))
-                        .Table(resultSet.getString(3))
-                        .build();
-                indexBoList.add(dataDictBo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (Objects.nonNull(resultSet)) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (Objects.nonNull(preparedStatement)) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return new TreeMap<>(indexBoList.stream().collect(Collectors.groupingBy(IndexBo::getKey_name)));
-
-    }
-
-
     /**
      * 生成datax所需的迁移mysql到oracle的脚本,基于mysql的元素数据信息得到
      *
@@ -262,47 +85,57 @@ public class DataDictService {
      * @return dataX的迁移实体
      */
     public DataXConfigBean generateDataXConfigBean(String databaseName) {
-
         DataXConfigBean dataXConfigBean = DataXConfigBean.builder()
                 .job(DataXConfigBean.Job.builder()
                         .setting(DataXConfigBean.Setting.builder()
-                                .speed(DataXConfigBean.Speed.builder().channel(4).build())
+                                .speed(DataXConfigBean.Speed.builder().channel(1).build())
                                 .build())
-
+                        .content(Lists.newLinkedList())
                         .build())
                 .build();
 
         List<DataXConfigBean.Content> contents = dataXConfigBean.getJob().getContent();
 
-        Map<String, TableBo> tableBoMap = getTableBoMap(databaseName);
+        Map<String, TableBo> tableBoMap = mysqlDao.getTableBoMap(databaseName);
 
-        Map<String, List<DataDictBo>> tableNameDictListMap = getTableNameDataDictBoListMap(databaseName);
+        Map<String, List<ColumnBo>> tableNameDictListMap = mysqlDao.getTableNameDataDictBoListMap(databaseName);
+
+        Connection connection = mysqlDao.getConnection();
+
+        Map<String, AtomicInteger> indexNameMap = new HashMap<>(tableNameDictListMap.size() * 3);
 
         tableBoMap.forEach((tableName, tableBo) -> {
+            List<ColumnBo> columnBos = tableNameDictListMap.get(tableName);
 
-
-            List<DataDictBo> dataDictBos = tableNameDictListMap.get(tableName);
-
-            String querySql = getQuerySql(tableName, dataDictBos);
+            String querySql = getQuerySql(tableName, columnBos);
             //设置querySql
             Reader reader = Reader.builder()
                     .parameter(Reader.ReaderParameter.builder()
                             .connection(Collections.singletonList(Reader.ReaderConnection.builder()
                                     .querySql(Collections.singletonList(querySql))
+                                    .jdbcUrl(Lists.newLinkedList())
                                     .build()))
                             .build())
                     .build();
 
-            List<String> columns = getColumns(dataDictBos);
+            List<String> columns = getColumns(columnBos);
 
-            List<String> preSqls = getPreSqls(tableName, dataDictBos);
+            List<String> preSqls = new LinkedList<>();
+            List<String> preInitSqls = new LinkedList<>();
+            String dropTableSql = "delete from " + tableName;
+            preSqls.add(dropTableSql);
 
-            //TODO 生成表相关的索引
-            preSqls.addAll(getTableIndexList(databaseName, tableName));
+            //生成建表，设置备注的sql
+            preInitSqls.addAll(getPreSqls(databaseName, tableName, columnBos));
+
+            //生成表相关的索引
+            List<String> tableIndexList = getTableIndexList(databaseName, tableName, indexNameMap);
+            preInitSqls.addAll(tableIndexList);
 
             Writer writer = Writer.builder()
                     .parameter(Writer.WriterParameter.builder()
                             .column(columns)
+                            .preInitTableSql(preInitSqls)
                             .preSql(preSqls)
                             .connection(Collections.singletonList(Writer.WriteConnection.builder()
                                     .table(Collections.singletonList(tableName))
@@ -313,89 +146,151 @@ public class DataDictService {
             contents.add(DataXConfigBean.Content.builder().reader(reader).writer(writer).build());
         });
 
+        //清空索引统计信息
+        indexNameMap.clear();
         return dataXConfigBean;
     }
 
-    public List<String> getTableIndexList(String databaseName, String tableName) {
+    /**
+     * @param databaseName
+     * @param tableName
+     * @param indexNameMap
+     * @return
+     */
+    public List<String> getTableIndexList(String databaseName, String tableName, Map<String, AtomicInteger> indexNameMap) {
         List<String> createTableIndexSqls = new LinkedList<>();
 
-        Map<String, List<IndexBo>> indexNameIndexBoListMap = getIndexNameIndexBoListMap(databaseName, tableName);
+        Map<String, List<IndexBo>> indexNameIndexBoListMap = mysqlDao.getIndexNameIndexBoListMap(databaseName, tableName);
+
+        //找出跟主键索引冲突的一般索引
+        Set<String> primaryColumnSet = indexNameIndexBoListMap.entrySet().stream()
+                .filter(item -> "primary".equalsIgnoreCase(item.getKey()))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElse(Collections.emptyList())
+                .stream().map(IndexBo::getColumnName)
+                .collect(Collectors.toSet());
 
         indexNameIndexBoListMap.forEach((indexName, indexBoList) -> {
-            if (!"PRIMARY".equalsIgnoreCase(indexName)) {
-                //create index IDX_BWT_INSTANCEID on BIZ_WORKFLOW_TOKEN (INSTANCEID)
-                StringBuilder createTableIndexStringBuilder = new StringBuilder("create index ")
-                        .append(indexName)
-                        .append(" on ").append(tableName)
-                        .append(indexBoList.stream()
-                                .sorted(Comparator.comparingInt(IndexBo::getSeq_in_index))
-                                .map(IndexBo::getColumn_name)
-                                .collect(Collectors.joining(",", "(", ")")));
 
-                createTableIndexSqls.add(createTableIndexStringBuilder.toString());
+            Set<String> columnSet = indexBoList.stream().map(IndexBo::getColumnName).collect(Collectors.toSet());
+
+            if (!"PRIMARY".equalsIgnoreCase(indexName) && !Objects.deepEquals(columnSet, primaryColumnSet)) {
+                //create index IDX_BWT_INSTANCEID on BIZ_WORKFLOW_TOKEN (INSTANCEID)
+
+
+                String indexNameFul = indexName + "_" + getTableAliasName(tableName);
+
+                if (indexNameFul.length() >= 30) {
+                    //超长的索引，进行简化
+                    indexNameFul = getTableAliasName(indexNameFul) + "_" + getTableAliasName(tableName);
+                }
+
+                if (indexNameMap.containsKey(indexNameFul)) {
+                    indexNameMap.put(indexNameFul, new AtomicInteger(indexNameMap.get(indexNameFul).incrementAndGet()));
+                } else {
+                    indexNameMap.put(indexNameFul, new AtomicInteger(1));
+                }
+
+                //如果存在同名的了，增加数量编排
+                int indexNameCount = indexNameMap.get(indexNameFul).get();
+                indexNameFul = indexNameCount > 1 ? (indexNameFul + indexNameCount) : indexNameFul;
+
+                String createTableIndexStringBuilder = "create index " +
+                        indexNameFul +
+                        " on " + tableName +
+                        indexBoList.stream()
+                                .sorted(Comparator.comparingInt(IndexBo::getSeqInIndex))
+                                .map(IndexBo::getColumnName)
+                                .collect(Collectors.joining(",", "(", ")"));
+                createTableIndexSqls.add(createTableIndexStringBuilder);
             }
 
 
         });
 
-       return createTableIndexSqls;
+        return createTableIndexSqls;
     }
 
-    //TODO 分别放入删除表，新建表，新建索引的语句 oracle
-    private List<String> getPreSqls(String tableName, List<DataDictBo> dataDictBos) {
 
+    private static String getTableAliasName(String tableName) {
+        return Arrays.asList(StringUtils.split(tableName, "_")).stream().map(item -> item.substring(0, 1))
+                .collect(Collectors.joining(""));
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getTableAliasName("h_user_guide"));
+    }
+
+
+    //分别放入删除表，新建表 , 表字段备注语句 oracle
+    private List<String> getPreSqls(String databaseName, String tableName, List<ColumnBo> columnBos) {
         List<String> columnCommentSqls = new LinkedList<>();
 
         StringBuilder createTableStringBuilder = new StringBuilder("create table ").append(tableName).append("(");
 
-        dataDictBos.forEach(dataDictBo -> {
+        List<String> primaryFieldList = Lists.newLinkedList();
+        columnBos.forEach(columnBo -> {
 
-            String columnType = dataDictBo.getCOLUMN_TYPE();
+            String columnType = columnBo.getCOLUMN_TYPE();
             ColumnTypeBo columnTypeBo = ColumnTypeBo.getColumnTypeBo(columnType);
             String oracleTypeString = ColumnTypeBo.getOracleType(columnTypeBo);
 
-            String columnName = dataDictBo.getCOLUMN_NAME();
+            String columnName = columnBo.getCOLUMN_NAME();
 
-            String columnComment = dataDictBo.getCOLUMN_COMMENT();
+            String columnComment = columnBo.getCOLUMN_COMMENT();
             if (!Strings.isNullOrEmpty(columnComment)) {
-                columnCommentSqls.add(String.format("comment on column TABLENAME.COLUMNNAME  is '%s'", columnComment));
+                columnCommentSqls.add(String.format("comment on column %s.%s  is '%s'", tableName, columnName, columnComment));
             }
 
 
-            createTableStringBuilder.append(columnName)
+            createTableStringBuilder.append("" + columnName + "")
                     .append(" ").append(oracleTypeString);
 
-            String isNullableStr = dataDictBo.getIS_NULLABLE();
+            String isNullableStr = columnBo.getIS_NULLABLE();
+
+            String columnDefault = columnBo.getCOLUMN_DEFAULT();
+
+            if (!Strings.isNullOrEmpty(columnDefault)) {
+
+                if (columnDefault.startsWith("b") && columnDefault.contains("'")) {
+                    columnDefault = columnDefault.substring(columnDefault.indexOf("'") + 1, columnDefault.lastIndexOf("'"));
+                }
+
+                if (oracleTypeString.contains("varchar2") || (oracleTypeString.contains("date") && Character.isDigit(columnDefault.charAt(0)))) {
+                    createTableStringBuilder.append(" default '").append(columnDefault).append("' ");
+                } else {
+                    createTableStringBuilder.append(" default ").append(columnDefault);
+                }
+
+            }
 
             if ("no".equalsIgnoreCase(isNullableStr)) {
                 createTableStringBuilder.append(" not null");
             }
 
-            String columnKey = dataDictBo.getCOLUMN_KEY();
+            String columnKey = columnBo.getCOLUMN_KEY();
             if ("pri".equalsIgnoreCase(columnKey)) {
-                createTableStringBuilder.append(" primary key ");
-            }
-
-            String columnDefault = dataDictBo.getCOLUMN_DEFAULT();
-
-            if (!Strings.isNullOrEmpty(columnDefault)) {
-                createTableStringBuilder.append(" default ").append(columnDefault);
+                primaryFieldList.add(columnName);
             }
 
             createTableStringBuilder.append(", ");
 
         });
 
-
+        if (!primaryFieldList.isEmpty()) {
+            createTableStringBuilder.append(primaryFieldList.stream().collect(Collectors.joining(",", " primary key(", ")")));
+        } else {
+            createTableStringBuilder
+                    .delete(createTableStringBuilder.length() - 2, createTableStringBuilder.length() - 1);
+        }
         String createTableSql = createTableStringBuilder
-                .deleteCharAt(createTableStringBuilder.length() - 1)
                 .append(")")
                 .toString();
 
         List<String> preSqlList = new LinkedList<>();
 
-        String dropTableSql = "drop table " + tableName;
-        preSqlList.add(dropTableSql);
         preSqlList.add(createTableSql);
         preSqlList.addAll(columnCommentSqls);
 
@@ -404,18 +299,18 @@ public class DataDictService {
     }
 
     //获取表的字段列表
-    private List<String> getColumns(List<DataDictBo> dataDictBos) {
-        return dataDictBos.stream().map(DataDictBo::getCOLUMN_NAME).collect(Collectors.toList());
+    private List<String> getColumns(List<ColumnBo> columnBos) {
+        return columnBos.stream().map(ColumnBo::getCOLUMN_NAME).collect(Collectors.toList());
     }
 
     //获取查询的SQL
-    private String getQuerySql(String tableName, List<DataDictBo> dataDictBos) {
+    private String getQuerySql(String tableName, List<ColumnBo> columnBos) {
 
         StringBuilder stringBuilder = new StringBuilder("select");
 
-        dataDictBos.stream().forEachOrdered(dataDictBo -> {
-            String columnName = dataDictBo.getCOLUMN_NAME();
-            String columnType = dataDictBo.getCOLUMN_TYPE();
+        columnBos.forEach(columnBo -> {
+            String columnName = columnBo.getCOLUMN_NAME();
+            String columnType = columnBo.getCOLUMN_TYPE();
 
             ColumnTypeBo columnTypeBo = ColumnTypeBo.getColumnTypeBo(columnType);
 
@@ -427,6 +322,6 @@ public class DataDictService {
             stringBuilder.append(" ").append(columnName).append(",");
         });
 
-        return stringBuilder.deleteCharAt(stringBuilder.length() - 1).append("from ").append(tableName).append(";").toString();
+        return stringBuilder.deleteCharAt(stringBuilder.length() - 1).append(" from ").append(tableName).append(";").toString();
     }
 }

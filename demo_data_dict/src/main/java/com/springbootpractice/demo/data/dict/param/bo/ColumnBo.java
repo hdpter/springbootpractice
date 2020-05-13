@@ -18,8 +18,8 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("数据字典业务实体")
-public class DataDictBo implements Serializable {
+@ApiModel("列数据业务对象")
+public class ColumnBo implements Serializable {
     private static final long serialVersionUID = 992970216765589494L;
 
     @ApiModelProperty("列名")
@@ -45,6 +45,9 @@ public class DataDictBo implements Serializable {
 
     @ApiModelProperty("是否是主键，pri")
     private String COLUMN_KEY;
+
+    @ApiModelProperty("列的顺序")
+    private Long Column_Index;
 
 
 }

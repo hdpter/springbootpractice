@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author carter
@@ -26,14 +25,14 @@ public class CompareRestReq implements Serializable {
     @ApiModelProperty("mysql的数据库名")
     private String mysqlDatabase;
 
-    @ApiModelProperty("mysql的表名集合")
-    private Set<String> mysqlTableSet;
+    @ApiModelProperty("mysql的表名")
+    private String mysqlTableName;
 
     @ApiModelProperty("oracle的数据库名")
     private String oracleDatabase;
 
-    @ApiModelProperty("oracle的表名集合")
-    private Set<String> oracleTableSet;
+    @ApiModelProperty("oracle的表名")
+    private String oracleTableName;
 
 
 }

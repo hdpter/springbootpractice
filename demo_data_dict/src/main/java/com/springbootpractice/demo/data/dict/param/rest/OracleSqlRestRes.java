@@ -11,19 +11,17 @@ import java.io.Serializable;
 
 /**
  * @author carter
- * create_date  2020/5/9 10:45
- * description     对比二进制字段结果
+ * create_date  2020/5/11 15:30
+ * description     生成oracle的初始化脚本
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("对比二进制字段结果")
-public class CompareTableBitArrayFieldRestRes implements Serializable {
+@ApiModel("生成oracle的初始化脚本")
+public class OracleSqlRestRes implements Serializable {
+    private static final long serialVersionUID = -1813800495221295243L;
 
-    private static final long serialVersionUID = 4736565695816129566L;
-
-    @ApiModelProperty("对比结果")
-    private String msg;
-
+    @ApiModelProperty("oracle的建表脚本")
+    private String oracleSql;
 }

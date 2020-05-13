@@ -1,77 +1,88 @@
 package com.springbootpractice.demo.data.dict.web;
 
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
 import com.springbootpractice.demo.data.dict.param.datax.DataXConfigBean;
 import com.springbootpractice.demo.data.dict.param.datax.Reader;
 import com.springbootpractice.demo.data.dict.param.datax.Writer;
 import com.springbootpractice.demo.data.dict.param.rest.ConnectionReqParam;
 import com.springbootpractice.demo.data.dict.param.rest.DataXRestReqVo;
 import com.springbootpractice.demo.data.dict.param.rest.DatabaseListResParam;
-import com.springbootpractice.demo.data.dict.param.rest.GenerateDataDictResParam;
+import com.springbootpractice.demo.data.dict.param.rest.OracleSqlRestRes;
 import com.springbootpractice.demo.data.dict.service.DataDictService;
+import com.springbootpractice.demo.data.dict.util.JsonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * 说明：页面控制
+ * 说明：dataX配置生成接口
  *
  * @author carter
  * 创建时间： 2020年02月03日 3:57 下午
  **/
 @RestController
-@Api("数据字典生成")
-public class IndexController {
+@Api("DataX配置生成")
+@RequestMapping("/datax")
+public class DataXController {
 
     private final DataDictService dataDictService;
 
-    public IndexController(DataDictService dataDictService) {
+    public DataXController(DataDictService dataDictService) {
         this.dataDictService = dataDictService;
     }
 
     @GetMapping(path = "/index")
     @ApiIgnore
     public ModelAndView index() {
-        return new ModelAndView("index");
+        return new ModelAndView("datax");
     }
 
-    @PostMapping(path = "/testConnection")
-    @ApiOperation(value = "测试连接信息并获取数据库列表")
-    public DatabaseListResParam testConnection(@NonNull ConnectionReqParam param) {
+    @PostMapping(path = "/testOracleConnection")
+    @ApiOperation(value = "测试连接Oracle信息并获取数据库列表")
+    public DatabaseListResParam testOracleConnection(@NonNull ConnectionReqParam param) {
         final List<String> connectionDatabaseList = dataDictService.getConnectionDatabaseList(param.getConnectionUrl(), param.getUsername(), param.getPassword());
         return DatabaseListResParam.builder().databaseList(connectionDatabaseList).build();
     }
 
-    @PostMapping(path = "/generateDataDict")
-    @ApiOperation(value = "生成数据字典")
-    public GenerateDataDictResParam generateDataDict(@NonNull String databaseName) {
-        Assert.isTrue(StringUtils.isNotBlank(databaseName), "请选择数据库");
-        StringBuilder stringBuilder = new StringBuilder();
-        Arrays.stream(StringUtils.split(databaseName, ","))
-                .filter(StringUtils::isNotBlank)
-                .forEach(dbName -> {
-                    final String markdownContent = dataDictService.generateDataDict(dbName);
-                    stringBuilder.append(markdownContent).append("\n");
-                });
 
-        return GenerateDataDictResParam.builder().markdownContent(stringBuilder.toString()).build();
+    @PostMapping(path = "/generateOracleSql")
+    @ApiOperation(value = "生成Oracle的建表脚本")
+    public OracleSqlRestRes generateOracle(@NonNull DataXRestReqVo param) {
+        DataXConfigBean dataXConfigBean = generateDataXJson(param);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        dataXConfigBean.getJob().getContent()
+                .stream()
+                .flatMap(content -> Stream.of(content.getWriter().getParameter().getPreInitTableSql()))
+                .forEachOrdered((List<String> sqls) -> sqls.forEach(sql -> stringBuilder.append(sql).append(";\n")));
+
+        return OracleSqlRestRes.builder()
+                .oracleSql(stringBuilder.toString())
+                .build();
+
     }
 
+
     @PostMapping(path = "/generateDataXJson")
-    @ApiOperation(value = "生成DataX的json数据")
+    @ApiOperation(value = "生成DataX的json数据,reader:Mysql,writer:Oracle")
     public DataXConfigBean generateDataXJson(@NonNull DataXRestReqVo param) {
 
         String mysqlDatabaseName = param.getMysqlDatabaseName();
@@ -119,11 +130,52 @@ public class IndexController {
     }
 
 
-    @GetMapping(path = "/index/{databaseName}/{tableName}")
-    @ApiOperation(value = "生成DataX的json数据")
-    public Object getIndexInfo(@PathVariable("tableName") String tableName,@PathVariable("databaseName") String databaseName){
+    @PostMapping(path = "/generateDataXJsonFile")
+    @ApiOperation(value = "生成DataX的json数据的多个文件,reader:Mysql,writer:Oracle")
+    public OracleSqlRestRes generateDataXJsonFile(@NonNull DataXRestReqVo param) {
 
-      return   dataDictService.getTableIndexList(databaseName,tableName);
+        String dateTimeStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+        DataXConfigBean dataXConfigBean = generateDataXJson(param);
+
+        String pathName = "/data/datax/" + dateTimeStr;
+        File file = new File(pathName);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        AtomicInteger integer = new AtomicInteger(1);
+        dataXConfigBean.getJob().getContent().forEach(content -> {
+
+            DataXConfigBean fileContent = DataXConfigBean.builder()
+                    .job(DataXConfigBean.Job.builder()
+                            .setting(dataXConfigBean.getJob().getSetting())
+                            .content(Collections.singletonList(content))
+                            .build())
+                    .build();
+
+            String tableName = content.getWriter().getParameter().getConnection().get(0).getTable().get(0);
+            File fileToWrite = new File(pathName + "/" + integer.getAndIncrement()+"_"+tableName + ".json");
+
+            try {
+                if (!fileToWrite.exists()) {
+                    fileToWrite.createNewFile();
+                }
+                Files.write(JsonUtil.toJson(fileContent).getBytes(), fileToWrite);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+
+        return OracleSqlRestRes.builder().oracleSql(pathName).build();
+
+    }
+
+
+    @GetMapping(path = "/preSql/{databaseName}/{tableName}")
+    @ApiOperation(value = "生成oracle的建表和索引语句")
+    public Object getOraclePreSql(@PathVariable("tableName") String tableName, @PathVariable("databaseName") String databaseName) {
+        return dataDictService.getTableIndexList(databaseName, tableName, Maps.newHashMap());
 
     }
 }

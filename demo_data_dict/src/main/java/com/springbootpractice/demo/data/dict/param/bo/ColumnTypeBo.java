@@ -5,11 +5,11 @@ import com.google.common.base.Strings;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author carter
@@ -22,6 +22,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("字段的类型和长度")
+@Slf4j
 public class ColumnTypeBo implements Serializable {
 
     private static final long serialVersionUID = 5761868821705193679L;
@@ -44,7 +45,12 @@ public class ColumnTypeBo implements Serializable {
         }
 
         String columnTypeString = trimString.substring(0, indexOfStart);
-        String columnLengthString = trimString.substring(indexOfStart+1, trimString.indexOf(")"));
+        String columnLengthString = trimString.substring(indexOfStart + 1, trimString.indexOf(")"));
+
+        if (!NumberUtils.isDigits(columnLengthString)) {
+            log.info("字段信息：{},{}", columnTypeString, columnLengthString);
+            return ColumnTypeBo.builder().columnTypeName(columnTypeString).build();
+        }
 
         return ColumnTypeBo.builder().columnTypeName(columnTypeString)
                 .columnTypeLength(Integer.parseInt(columnLengthString))
@@ -55,16 +61,38 @@ public class ColumnTypeBo implements Serializable {
     public static void main(String[] args) {
 
 
+        ColumnTypeBo columnTypeBo1 = ColumnTypeBo.getColumnTypeBo("decimal(13,4)");
+        System.out.println(columnTypeBo1);
+
         ColumnTypeBo columnTypeBo = ColumnTypeBo.getColumnTypeBo("bit(1)");
         System.out.println(columnTypeBo);
+
+
 
 
         ColumnTypeBo columnTypeBo2 = ColumnTypeBo.getColumnTypeBo("datetime");
         System.out.println(columnTypeBo2);
 
+
+        String columnDefault="b'0'";;
+        if (columnDefault.startsWith("b") && columnDefault.contains("'")){
+            columnDefault = columnDefault.substring(columnDefault.indexOf("'")+1, columnDefault.lastIndexOf("'"));
+        }
+        System.out.println(columnDefault);
+
+        Set<String> set1 = new HashSet<>();
+        set1.add("id");
+
+        Set<String> set2 = new HashSet<>();
+        set2.add("id");
+
+        System.out.println("set compare: "+Objects.deepEquals(set1, set2));
+
+
     }
 
-    private static Map<String,String> mysqlTypeMapOracleType = new HashMap<>();
+    private static Map<String, String> mysqlTypeMapOracleType = new HashMap<>();
+
     static {
         mysqlTypeMapOracleType.put("varchar", "varchar2");
 
@@ -79,11 +107,11 @@ public class ColumnTypeBo implements Serializable {
          * BIGINT(-9223372036854775808-9223372036854775807)
          */
         mysqlTypeMapOracleType.put("tinyint", "number");
-        mysqlTypeMapOracleType.put("SMALLINT", "number");
-        mysqlTypeMapOracleType.put("MEDIUMINT", "number");
-        mysqlTypeMapOracleType.put("INT", "number");
-        mysqlTypeMapOracleType.put("BIGINT", "number");
-        mysqlTypeMapOracleType.put("DECIMAL", "number");
+        mysqlTypeMapOracleType.put("SMALLINT".toLowerCase(), "number");
+        mysqlTypeMapOracleType.put("MEDIUMINT".toLowerCase(), "number");
+        mysqlTypeMapOracleType.put("int", "number");
+        mysqlTypeMapOracleType.put("BIGINT".toLowerCase(), "number");
+        mysqlTypeMapOracleType.put("DECIMAL".toLowerCase(), "number");
         mysqlTypeMapOracleType.put("float", "number");
         mysqlTypeMapOracleType.put("double", "number");
         mysqlTypeMapOracleType.put("bit", "number");
@@ -105,22 +133,30 @@ public class ColumnTypeBo implements Serializable {
         mysqlTypeMapOracleType.put("mediumblob", "blob");
         mysqlTypeMapOracleType.put("longblob", "blob");
 
-
+        mysqlTypeMapOracleType.put("json", "varchar2(4000)");
 
 
     }
 
     public static String getOracleType(@NonNull ColumnTypeBo columnTypeBo) {
 
-        String columnTypeName = columnTypeBo.getColumnTypeName();
+        String columnTypeName = columnTypeBo.getColumnTypeName().toLowerCase();
         boolean containsKey = mysqlTypeMapOracleType.containsKey(columnTypeName);
-        Preconditions.checkArgument(containsKey, "没有对mysql的类型【%s】配置对应oracleType",columnTypeName);
+        Preconditions.checkArgument(containsKey, "没有对mysql的类型【%s】配置对应oracleType", columnTypeName);
 
-        String oracleTypeName  = mysqlTypeMapOracleType.get(columnTypeName);
+        String oracleTypeName = mysqlTypeMapOracleType.get(columnTypeName);
         Integer columnTypeLength = columnTypeBo.getColumnTypeLength();
 
-        if (Objects.isNull(columnTypeLength)){
+        if (Objects.isNull(columnTypeLength)) {
             return oracleTypeName;
+        }
+        //长度超过4000，使用clob存储
+        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength>4000){
+            return mysqlTypeMapOracleType.get("tinytext");
+        }
+        //长度超过38，使用number字段类型
+        if ("number".equalsIgnoreCase(oracleTypeName) && columnTypeLength>38){
+            return "number";
         }
 
         return new StringBuilder(oracleTypeName).append("(").append(columnTypeLength).append(")").toString();

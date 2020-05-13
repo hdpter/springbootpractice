@@ -22,12 +22,15 @@ import java.io.Serializable;
 public class TableBo implements Serializable {
     private static final long serialVersionUID = -7365186679766065785L;
 
-    @ApiModelProperty("表名")
+    @ApiModelProperty("表名，oracle,mysql都有")
     private String TABLE_NAME;
 
-    @ApiModelProperty("表备注")
+    @ApiModelProperty("表备注，mysql独有")
     private String TABLE_COMMENT;
 
-    @ApiModelProperty("存储引擎")
+    @ApiModelProperty("存储引擎，mysql独有")
     private String ENGINE;
+
+    @ApiModelProperty("表的最后更新时间，oracle独有")
+    private String LAST_ANALYZED;
 }

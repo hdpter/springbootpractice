@@ -38,11 +38,13 @@ public class DataXRestReqVo implements Serializable {
     @ApiModelProperty("oracle连接url")
     private String oracleConnectionUrl;
 
-    @ApiModelProperty("oralce用户名")
+    @ApiModelProperty("oracle用户名")
     private String oracleUsername;
 
     @ApiModelProperty("oracle密码")
     private String oraclePassword;
 
+    @ApiModelProperty("oracle的数据库名称")
+    private String oracleDatabaseName;
 
 }
