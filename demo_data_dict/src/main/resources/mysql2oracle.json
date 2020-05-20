@@ -11,14 +11,14 @@
           "name": "mysqlreader",
           "parameter": {
             "username": "root",
-            "password": "test123456!@#$%",
+            "password": "test123456",
             "connection": [
               {
                 "querySql": [
                   "select id, createdTime, creater, if(deleted=true,1,0) deleted, extend1, extend2, extend3, extend4, extend5, modifiedTime, modifier, remarks, accessTokenValiditySeconds, additionInformation, authorities, authorizedGrantTypes, autoApproveScopes, clientId, clientSecret, refreshTokenValiditySeconds, registeredRedirectUris, resourceIds, scopes, type from base_security_client;"
                 ],
                 "jdbcUrl": [
-                  "jdbc:mysql://47.113.111.95:3306/cloudpivot"
+                  "jdbc:mysql://120.77.242.238:3306/cloudpivot"
                 ]
               }
             ]
@@ -62,7 +62,7 @@
             ],
             "connection": [
               {
-                "jdbcUrl": "jdbc:oracle:thin:@47.107.241.221:1521:orcl",
+                "jdbcUrl": "jdbc:oracle:thin:@127.0.0.1:1521:orcl",
                 "table": [
                   "base_security_client1"
                 ]

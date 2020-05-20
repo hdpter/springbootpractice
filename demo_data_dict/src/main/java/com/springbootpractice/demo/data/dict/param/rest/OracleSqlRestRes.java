@@ -24,4 +24,7 @@ public class OracleSqlRestRes implements Serializable {
 
     @ApiModelProperty("oracle的建表脚本")
     private String oracleSql;
+
+    @ApiModelProperty("生成的sql脚本的全路径")
+    private String filePathName;
 }

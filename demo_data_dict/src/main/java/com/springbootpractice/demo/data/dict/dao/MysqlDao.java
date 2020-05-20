@@ -46,7 +46,7 @@ public class MysqlDao {
     /**
      * 30分钟自动关闭数据源
      */
-    @Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 60*12)
     public void autoCloseDataSource() {
         try {
             if (Objects.nonNull(druidDataSource)) {
@@ -199,6 +199,17 @@ public class MysqlDao {
                         .TABLE_NAME(resultSet.getString("TABLE_NAME"))
                         .COLUMN_KEY(resultSet.getString("COLUMN_KEY"))
                         .build();
+
+                //如果出现关键字，加引号
+                if (Arrays.asList("date","level").contains(columnBo.getCOLUMN_NAME().toLowerCase())){
+                    String trimString="\""+columnBo.getCOLUMN_NAME()+"\"";
+                    columnBo.setCOLUMN_NAME(trimString);
+                }
+
+                if (columnBo.getTABLE_NAME().toLowerCase().startsWith("i")){
+                    columnBo.setCOLUMN_NAME("\""+columnBo.getCOLUMN_NAME()+"\"");
+                }
+
                 columnBoList.add(columnBo);
             }
         } catch (SQLException e) {
@@ -282,7 +293,11 @@ public class MysqlDao {
     public Map<String, Object> getRowData(String databaseName, String tableName, boolean isFirst) {
 
         List<ColumnBo> columnBoList = Optional.ofNullable(getTableNameDataDictBoListMap(databaseName))
-                .map(m -> m.get(tableName)).orElse(Collections.emptyList());
+                .map(m -> m.get(tableName)).orElse(Collections.emptyList())
+                .stream().map(item->{
+                    item.setCOLUMN_NAME(item.getCOLUMN_NAME().replaceAll("\"",""));
+                    return item;
+                }).collect(Collectors.toList());
 
         if (columnBoList.isEmpty()) {
             return Collections.emptyMap();

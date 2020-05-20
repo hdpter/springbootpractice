@@ -8,12 +8,9 @@ import com.springbootpractice.demo.data.dict.service.DataCService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author carter
@@ -31,11 +28,6 @@ public class DataCController {
         this.dataCService = dataCService;
     }
 
-    @GetMapping(path = "/index")
-    @ApiIgnore
-    public ModelAndView index() {
-        return new ModelAndView("datac");
-    }
 
 
     @PostMapping("/compare/init_datasource")

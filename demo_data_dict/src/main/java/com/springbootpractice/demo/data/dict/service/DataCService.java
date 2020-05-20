@@ -58,8 +58,16 @@ public class DataCService {
         DataCompareService mysqlService = DATA_COMPARE_SERVICE_MAP.get("mysql");
         DataCompareService oracleService = DATA_COMPARE_SERVICE_MAP.get("oracle");
 
-        Set<String> mysqlTableSet = mysqlService.getTableCount(mysqlDatabaseName).stream().map(String::toLowerCase).collect(Collectors.toSet());
+        Set<String> mysqlTableSet = mysqlService.getTableCount(mysqlDatabaseName);
         Set<String> oracleTableSet = oracleService.getTableCount(oracleDatabaseName);
+
+        Map<String,String> mysqlMap = new HashMap<>(mysqlTableSet.size());
+        Map<String,String> oracleMap = new HashMap<>(oracleTableSet.size());
+
+        mysqlTableSet.forEach(k->mysqlMap.put(k.toLowerCase(),k));
+        oracleTableSet.forEach(k->oracleMap.put(k.toLowerCase(),k));
+
+
 
         int mysqlTableCount = mysqlTableSet.size();
         int oracleTableCount = oracleTableSet.size();
@@ -67,30 +75,29 @@ public class DataCService {
         String countMsg = String.format("mysql的数据库%s表数量%d个，oracle的数据库%s表数量%d个", mysqlDatabaseName, mysqlTableCount, oracleDatabaseName, oracleTableCount);
         List<InitCompareRestRes.TableCompareBo> tableCompareBos = new LinkedList<>();
 
-        Set<String> oracleLowCaseTableSet = oracleTableSet.stream().map(String::toLowerCase).collect(Collectors.toSet());
+        Sets.SetView<String> intersection = Sets.intersection(mysqlMap.keySet(), oracleMap.keySet());
 
-        Sets.SetView<String> intersection = Sets.intersection(mysqlTableSet, oracleLowCaseTableSet);
-
-        Sets.SetView<String> differenceMysql = Sets.difference(mysqlTableSet, oracleLowCaseTableSet);
-        Sets.SetView<String> differenceOracle = Sets.difference(oracleLowCaseTableSet, mysqlTableSet);
+        Sets.SetView<String> differenceMysql = Sets.difference(mysqlMap.keySet(), oracleMap.keySet());
+        Sets.SetView<String> differenceOracle = Sets.difference(mysqlMap.keySet(), oracleMap.keySet());
 
 
         for (String tableName : intersection) {
-            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().mysqlTableName(tableName).oracleTableName(tableName.toUpperCase()).build());
+
+            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().mysqlTableName(mysqlMap.get(tableName))
+                    .oracleTableName(oracleMap.get(tableName)).build());
         }
 
         for (String tableName : differenceMysql) {
-            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().mysqlTableName(tableName).build());
+
+            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().mysqlTableName(mysqlMap.get(tableName)).build());
         }
 
         for (String tableName : differenceOracle) {
-            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().oracleTableName(tableName.toUpperCase()).build());
+            tableCompareBos.add(InitCompareRestRes.TableCompareBo.builder().oracleTableName(oracleMap.get(tableName)).build());
         }
 
 
         String totalMsg = "";
-
-
 
         return InitCompareRestRes.builder()
                 .countMsg(countMsg)
@@ -129,16 +136,28 @@ public class DataCService {
         Map<String, Object> oracleFirstRow = oracleService.getFirstRow(oracleDatabase, oracleTableName);
         Map<String, Object> oracleLastRow = oracleService.getLastRow(oracleDatabase, oracleTableName);
 
+        Map<String,String> oracleKeyMapF= new HashMap<>(oracleFirstRow.size());
+        Map<String,String> oracleKeyMapL= new HashMap<>(oracleLastRow.size());
+
+        oracleFirstRow.keySet().forEach(k->{
+            oracleKeyMapF.put(k.toLowerCase().replaceAll("\"",""),k);
+        });
+
+        oracleLastRow.keySet().forEach(k->{
+            oracleKeyMapL.put(k.toLowerCase().replaceAll("\"",""),k);
+        });
+
+
+
         List<CompareTableRowDataRestRes.CellBo> firstRows = new LinkedList<>();
 
         for (String columnName : mysqlFirstRow.keySet()) {
             CompareTableRowDataRestRes.CellBo cellBo = CompareTableRowDataRestRes.CellBo.builder().mKey(columnName).mValue(mysqlFirstRow.get(columnName)).build();
 
-            String oracleKey = columnName.toUpperCase();
-            boolean containsKey = oracleFirstRow.containsKey(oracleKey);
+            boolean containsKey = oracleKeyMapF.containsKey(columnName.toLowerCase());
             if (containsKey) {
-                cellBo.setOKey(oracleKey);
-                cellBo.setOValue(oracleFirstRow.get(oracleKey));
+                cellBo.setOKey(oracleKeyMapF.get(columnName.toLowerCase()));
+                cellBo.setOValue(oracleFirstRow.get(cellBo.getOKey()));
             }
 
             firstRows.add(cellBo);
@@ -148,11 +167,10 @@ public class DataCService {
         for (String columnName : mysqlLastRow.keySet()) {
             CompareTableRowDataRestRes.CellBo cellBo = CompareTableRowDataRestRes.CellBo.builder().mKey(columnName).mValue(mysqlLastRow.get(columnName)).build();
 
-            String oracleKey = columnName.toUpperCase();
-            boolean containsKey = oracleLastRow.containsKey(oracleKey);
+            boolean containsKey = oracleKeyMapL.containsKey(columnName.toLowerCase());
             if (containsKey) {
-                cellBo.setOKey(oracleKey);
-                cellBo.setOValue(oracleLastRow.get(oracleKey));
+                cellBo.setOKey(oracleKeyMapL.get(columnName.toLowerCase()));
+                cellBo.setOValue(oracleLastRow.get(cellBo.getOKey()));
             }
             lastRows.add(cellBo);
         }
@@ -203,7 +221,12 @@ public class DataCService {
         List<CompareTableFieldTypeRestRes.TableDefinitionBo> tableDefinitions = new LinkedList<>();
 
         Map<String, ColumnBo> mysqlTableColumnList = mysqlService.getTableColumnList(mysqlDatabase, mysqlTableName).stream().collect(Collectors.toMap(ColumnBo::getCOLUMN_NAME, Function.identity()));
-        Map<String, ColumnBo> oracleTableColumnList = oracleService.getTableColumnList(oracleDatabase, oracleTableName).stream().collect(Collectors.toMap(ColumnBo::getCOLUMN_NAME, Function.identity()));
+        Map<String, ColumnBo> oracleTableColumnList = oracleService.getTableColumnList(oracleDatabase, oracleTableName).stream()
+                .map(item->{
+                    item.setCOLUMN_NAME(item.getCOLUMN_NAME().toLowerCase());
+                    return item;
+                })
+                .collect(Collectors.toMap(ColumnBo::getCOLUMN_NAME, Function.identity()));
         ;
 
         mysqlTableColumnList.forEach((k, v) -> {
@@ -213,13 +236,10 @@ public class DataCService {
                     .mysqlFieldType(fieldType)
                     .build();
 
-            String oracleField = k.toUpperCase();
-            boolean containsKey = oracleTableColumnList.containsKey(oracleField);
+            boolean containsKey = oracleTableColumnList.containsKey(k.toLowerCase());
             if (containsKey) {
-
-
-                ColumnBo oColumnBo = oracleTableColumnList.get(oracleField);
-                String oFieldType = oracleField + " "+ oColumnBo.getCOLUMN_TYPE() + " " + oColumnBo.getCOLUMN_DEFAULT() + " " + oColumnBo.getIS_NULLABLE();
+                ColumnBo oColumnBo = oracleTableColumnList.get(k.toLowerCase());
+                String oFieldType = k + " "+ oColumnBo.getCOLUMN_TYPE() + " " + oColumnBo.getCOLUMN_DEFAULT() + " " + oColumnBo.getIS_NULLABLE();
 
                 tableDefinitionBo.setOracleFieldType(oFieldType);
             }
@@ -242,6 +262,7 @@ public class DataCService {
 
     public InitCompareRestRes compareTotal(String mysqlDatabaseName, String oracleDatabaseName) {
 
+        StringBuffer stringBuffer = new StringBuffer("失败原因：");
         //比较表的总数量
 
         DataCompareService mysqlService = DATA_COMPARE_SERVICE_MAP.get("mysql");
@@ -255,10 +276,14 @@ public class DataCService {
 
         boolean tableCountSuc = Objects.equals(mysqlTableCount,oracleTableCount);
 
+        if (!tableCountSuc){
+            stringBuffer.append("表的总数不一致，mysql:"+mysqlTableCount + " oracle: "+oracleTableCount);
+        }
 
         //比较所有的表的 数据总数，字段总数，索引总数
 
-        boolean tableInfoSuc = getInitCompareData(mysqlDatabaseName, oracleDatabaseName).getTableCompareBos().stream().map(tableCompareBo -> {
+        List<Boolean> tableResList = getInitCompareData(mysqlDatabaseName, oracleDatabaseName).getTableCompareBos().stream().map(tableCompareBo -> {
+
 
             String mysqlTableName = tableCompareBo.getMysqlTableName();
             String oracleTableName = tableCompareBo.getOracleTableName();
@@ -266,28 +291,36 @@ public class DataCService {
             Long tableDataCountMySql = mysqlService.getTableDataCount(mysqlDatabaseName, mysqlTableName);
             Long tableDataCountOracle = oracleService.getTableDataCount(oracleDatabaseName, oracleTableName);
 
-            if (!Objects.equals(tableDataCountMySql, tableDataCountOracle)) {
-                return false;
+            boolean tableCountEq = Objects.equals(tableDataCountMySql, tableDataCountOracle);
+            if (!tableCountEq) {
+                stringBuffer.append("<br>表[" + mysqlTableName + "]的数据总数不一致，mysql:" + tableDataCountMySql + " oracle: " + tableDataCountOracle);
             }
 
             int fieldSizeMysql = mysqlService.getTableColumnList(mysqlDatabaseName, mysqlTableName).size();
             int fieldSizeOracle = oracleService.getTableColumnList(oracleDatabaseName, oracleTableName).size();
 
-            if (!Objects.equals(fieldSizeMysql, fieldSizeOracle)) {
-                return false;
+            boolean fieldSizeEq = Objects.equals(fieldSizeMysql, fieldSizeOracle);
+            if (!fieldSizeEq) {
+                stringBuffer.append("<br>表[" + mysqlTableName + "]的字段总数不一致，mysql:" + fieldSizeMysql + " oracle: " + fieldSizeOracle);
             }
 
             int indexSizeMysql = mysqlService.getTableIndexList(mysqlDatabaseName, mysqlTableName).size();
             int indexSizeOracle = oracleService.getTableIndexList(oracleDatabaseName, oracleTableName).size();
 
-            return Objects.equals(indexSizeMysql, indexSizeOracle);
+            boolean indexCountEq = Objects.equals(indexSizeMysql, indexSizeOracle);
+            if (!indexCountEq) {
+                stringBuffer.append("<br>表[" + mysqlTableName + "]的索引总数不一致，mysql:" + indexSizeMysql + " oracle: " + indexSizeOracle);
+            }
 
-        }).allMatch(item -> Objects.equals(item, true));
+            return indexCountEq && fieldSizeEq && tableCountEq;
 
 
+        }).collect(Collectors.toList());
+
+        boolean tableInfoSuc = tableResList.stream().allMatch(item -> Objects.equals(item, true));
         boolean  suc = tableCountSuc && tableInfoSuc;
 
-        return InitCompareRestRes.builder().totalMsg(suc?"整体比对成功":"整体比对失败").build();
+        return InitCompareRestRes.builder().totalMsg(suc?"整体比对成功":"整体比对失败:"+stringBuffer.toString()).build();
 
     }
 }

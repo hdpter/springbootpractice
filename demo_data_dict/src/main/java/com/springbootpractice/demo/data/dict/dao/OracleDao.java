@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.springbootpractice.demo.data.dict.param.bo.ColumnBo;
+import com.springbootpractice.demo.data.dict.param.bo.DDLExecuteBo;
 import com.springbootpractice.demo.data.dict.param.bo.IndexBo;
 import com.springbootpractice.demo.data.dict.param.bo.TableBo;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class OracleDao {
     /**
      * 30分钟自动关闭数据源
      */
-    @Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 60*12)
     public void autoCloseDataSource() {
         try {
             if (Objects.nonNull(druidDataSource)) {
@@ -83,7 +84,7 @@ public class OracleDao {
         druidDataSource.setPassword(password);
         Properties properties = new Properties();
 
-        properties.setProperty("maxActive", "5");
+        properties.setProperty("maxActive", "2");
         properties.setProperty("initialSize", "1");
         properties.setProperty("maxWait", "60000");
         properties.setProperty("maxIdle", "1");
@@ -134,8 +135,8 @@ public class OracleDao {
                 TableBo tableBo = TableBo.builder()
                         .TABLE_NAME(resultSet.getString("TABLE_NAME"))
                         .build();
-                Optional.ofNullable(lastAnalyzed).ifPresent((date)->{
-                    tableBo.setLAST_ANALYZED(DateFormatUtils.format(date,"yyyyMMdd:HHmmss"));
+                Optional.ofNullable(lastAnalyzed).ifPresent((date) -> {
+                    tableBo.setLAST_ANALYZED(DateFormatUtils.format(date, "yyyyMMdd:HHmmss"));
                 });
                 tableBoMap.put(tableBo.getTABLE_NAME(), tableBo);
             }
@@ -150,7 +151,7 @@ public class OracleDao {
     }
 
 
-    public Map<String, List<ColumnBo>> getTableNameDataDictBoListMap(String databaseName,String tableName) {
+    public Map<String, List<ColumnBo>> getTableNameDataDictBoListMap(String databaseName, String tableName) {
 
         List<ColumnBo> columnBoList = Lists.newLinkedList();
 
@@ -160,7 +161,7 @@ public class OracleDao {
         try {
             //查询得到所有的数据的名称
 
-            preparedStatement = connection.prepareStatement(String.format(SQL_DATA_DICT,tableName.toUpperCase()));
+            preparedStatement = connection.prepareStatement(String.format(SQL_DATA_DICT, tableName));
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ColumnBo columnBo = ColumnBo.builder()
@@ -171,6 +172,17 @@ public class OracleDao {
                         .TABLE_NAME(resultSet.getString("TABLE_NAME"))
                         .Column_Index(resultSet.getLong("COLUMN_ID"))
                         .build();
+
+                //如果出现关键字，加引号
+                if (Arrays.asList("date","level").contains(columnBo.getCOLUMN_NAME().toLowerCase())){
+                    String trimString="\""+columnBo.getCOLUMN_NAME()+"\"";
+                    columnBo.setCOLUMN_NAME(trimString);
+                }
+
+                if (columnBo.getTABLE_NAME().toLowerCase().startsWith("i")){
+                    columnBo.setCOLUMN_NAME("\""+columnBo.getCOLUMN_NAME()+"\"");
+                }
+
                 columnBoList.add(columnBo);
             }
         } catch (SQLException e) {
@@ -193,7 +205,7 @@ public class OracleDao {
         try {
             //查询得到所有的数据的名称
 
-            prepareStatement = connection.prepareStatement(String.format(SQL_INDEX, tableName.toUpperCase()));
+            prepareStatement = connection.prepareStatement(String.format(SQL_INDEX, tableName));
             resultSet = prepareStatement.executeQuery();
 
             //INDEX_NAME, TABLE_NAME, COLUMN_NAME, COLUMN_POSITION, COLUMN_LENGTH, CHAR_LENGTH, DESCEND
@@ -220,7 +232,6 @@ public class OracleDao {
 
     public Long getTableDataCount(String databaseName, String tableName) {
 
-        tableName=tableName.toUpperCase();
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         Connection connection = getConnection();
@@ -258,7 +269,7 @@ public class OracleDao {
 
     public Map<String, Object> getRowData(String databaseName, String tableName, boolean isFirst) {
 
-        List<ColumnBo> columnBoList = Optional.ofNullable(getTableNameDataDictBoListMap(databaseName,tableName))
+        List<ColumnBo> columnBoList = Optional.ofNullable(getTableNameDataDictBoListMap(databaseName, tableName))
                 .map(m -> m.get(tableName)).orElse(Collections.emptyList());
 
         if (columnBoList.isEmpty()) {
@@ -302,5 +313,46 @@ public class OracleDao {
                 sqlException.printStackTrace();
             }
         }
+    }
+
+    private void closeStatement(Statement preparedStatement) {
+        if (Objects.nonNull(preparedStatement)) {
+            try {
+                preparedStatement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 执行表定义语句
+     * @param sql sql语句
+     * @return 0表示成功 小于0表示失败
+     */
+    public DDLExecuteBo executeDDLSql(String sql) {
+
+
+        Connection connection = getConnection();
+        Statement statement = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            int executeUpdateResult = statement.executeUpdate(sql);
+
+            log.info("执行ddl语句: {} 结果：{}", sql, executeUpdateResult);
+
+            return DDLExecuteBo.builder().res(executeUpdateResult).build();
+
+        } catch (Exception ex) {
+            log.error("执行ddl语句：{} 错误.", sql, ex);
+            return DDLExecuteBo.builder().res(-1).sql(sql).err(ex.getMessage()).build();
+        } finally {
+
+            closeStatement(statement);
+
+            closeConnection(connection);
+        }
+
+
     }
 }

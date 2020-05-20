@@ -22,12 +22,12 @@ class DemoDataDictApplicationTests {
 
 	@Autowired
 	private MysqlDao mysqlDao;
-	private String databaseName = "cloudpivot";
+	private String databaseName = "cloudpivot_ynjt";
 	String tableName = "base_security_client";
 
 	@BeforeEach
 	void setUp() {
-		mysqlDao.rebuildDataSource("jdbc:mysql://47.113.111.95:3306/cloudpivot", "root","test123456!@#$%");
+		mysqlDao.rebuildDataSource("jdbc:mysql://127.0.0.1:3306/cloudpivot_ynjt", "root","test123456");
 	}
 
 	@Test

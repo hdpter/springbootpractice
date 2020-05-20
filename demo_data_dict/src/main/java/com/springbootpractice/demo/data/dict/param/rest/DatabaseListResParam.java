@@ -25,4 +25,7 @@ public class DatabaseListResParam implements Serializable {
 
     @ApiModelProperty("数据库名列表")
     private List<String> databaseList;
+
+    @ApiModelProperty("oracle的数据源连接结果")
+    private String oracleLinkMsg;
 }

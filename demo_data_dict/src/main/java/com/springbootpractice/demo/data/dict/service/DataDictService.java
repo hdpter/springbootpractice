@@ -3,10 +3,8 @@ package com.springbootpractice.demo.data.dict.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.springbootpractice.demo.data.dict.dao.MysqlDao;
-import com.springbootpractice.demo.data.dict.param.bo.ColumnBo;
-import com.springbootpractice.demo.data.dict.param.bo.ColumnTypeBo;
-import com.springbootpractice.demo.data.dict.param.bo.IndexBo;
-import com.springbootpractice.demo.data.dict.param.bo.TableBo;
+import com.springbootpractice.demo.data.dict.dao.OracleDao;
+import com.springbootpractice.demo.data.dict.param.bo.*;
 import com.springbootpractice.demo.data.dict.param.datax.DataXConfigBean;
 import com.springbootpractice.demo.data.dict.param.datax.Reader;
 import com.springbootpractice.demo.data.dict.param.datax.Writer;
@@ -14,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -29,11 +26,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DataDictService {
 
-    public final MysqlDao mysqlDao;
+    private final MysqlDao mysqlDao;
+
+    private final OracleDao oracleDao;
 
 
-    public DataDictService(MysqlDao mysqlDao) {
+    public DataDictService(MysqlDao mysqlDao, OracleDao oracleDao) {
         this.mysqlDao = mysqlDao;
+        this.oracleDao = oracleDao;
     }
 
 
@@ -100,50 +100,63 @@ public class DataDictService {
 
         Map<String, List<ColumnBo>> tableNameDictListMap = mysqlDao.getTableNameDataDictBoListMap(databaseName);
 
-        Connection connection = mysqlDao.getConnection();
-
         Map<String, AtomicInteger> indexNameMap = new HashMap<>(tableNameDictListMap.size() * 3);
 
+        List<String> tableNameList = new LinkedList<>();
+
+        List<String> indexNameList = new LinkedList<>();
+        AtomicInteger atomicInteger = new AtomicInteger(1);
         tableBoMap.forEach((tableName, tableBo) -> {
+
+            atomicInteger.incrementAndGet();
+
+
             List<ColumnBo> columnBos = tableNameDictListMap.get(tableName);
+            if (!tableNameList.contains(tableName.toLowerCase())) {
 
-            String querySql = getQuerySql(tableName, columnBos);
-            //设置querySql
-            Reader reader = Reader.builder()
-                    .parameter(Reader.ReaderParameter.builder()
-                            .connection(Collections.singletonList(Reader.ReaderConnection.builder()
-                                    .querySql(Collections.singletonList(querySql))
-                                    .jdbcUrl(Lists.newLinkedList())
-                                    .build()))
-                            .build())
-                    .build();
+                String querySql = getQuerySql(tableName, columnBos);
+                //设置querySql
+                Reader reader = Reader.builder()
+                        .parameter(Reader.ReaderParameter.builder()
+                                .connection(Collections.singletonList(Reader.ReaderConnection.builder()
+                                        .querySql(Collections.singletonList(querySql))
+                                        .jdbcUrl(Lists.newLinkedList())
+                                        .build()))
+                                .build())
+                        .build();
 
-            List<String> columns = getColumns(columnBos);
+                List<String> columns = getColumns(columnBos);
 
-            List<String> preSqls = new LinkedList<>();
-            List<String> preInitSqls = new LinkedList<>();
-            String dropTableSql = "delete from " + tableName;
-            preSqls.add(dropTableSql);
+                List<String> preSqls = new LinkedList<>();
+                List<String> preInitSqls = new LinkedList<>();
+                String dropTableSql = "delete from " + tableName;
+                preSqls.add(dropTableSql);
 
-            //生成建表，设置备注的sql
-            preInitSqls.addAll(getPreSqls(databaseName, tableName, columnBos));
+                //生成建表，设置备注的sql
+                preInitSqls.addAll(getPreSqls(databaseName, tableName, columnBos));
 
-            //生成表相关的索引
-            List<String> tableIndexList = getTableIndexList(databaseName, tableName, indexNameMap);
-            preInitSqls.addAll(tableIndexList);
 
-            Writer writer = Writer.builder()
-                    .parameter(Writer.WriterParameter.builder()
-                            .column(columns)
-                            .preInitTableSql(preInitSqls)
-                            .preSql(preSqls)
-                            .connection(Collections.singletonList(Writer.WriteConnection.builder()
-                                    .table(Collections.singletonList(tableName))
-                                    .build()))
-                            .build())
-                    .build();
+                //生成表相关的索引
+                List<String> tableIndexList = getTableIndexList(databaseName, tableName, indexNameMap, indexNameList);
+                preInitSqls.addAll(tableIndexList);
 
-            contents.add(DataXConfigBean.Content.builder().reader(reader).writer(writer).build());
+                Writer writer = Writer.builder()
+                        .parameter(Writer.WriterParameter.builder()
+                                .column(columns)
+                                .preInitTableSql(preInitSqls)
+                                .preSql(preSqls)
+                                .connection(Collections.singletonList(Writer.WriteConnection.builder()
+                                        .table(Collections.singletonList("" + tableName + ""))
+                                        .build()))
+                                .build())
+                        .build();
+
+                contents.add(DataXConfigBean.Content.builder().reader(reader).writer(writer).build());
+
+            }
+            tableNameList.add(tableName.toLowerCase());
+
+
         });
 
         //清空索引统计信息
@@ -155,9 +168,10 @@ public class DataDictService {
      * @param databaseName
      * @param tableName
      * @param indexNameMap
+     * @param indexNameList
      * @return
      */
-    public List<String> getTableIndexList(String databaseName, String tableName, Map<String, AtomicInteger> indexNameMap) {
+    public List<String> getTableIndexList(String databaseName, String tableName, Map<String, AtomicInteger> indexNameMap, List<String> indexNameList) {
         List<String> createTableIndexSqls = new LinkedList<>();
 
         Map<String, List<IndexBo>> indexNameIndexBoListMap = mysqlDao.getIndexNameIndexBoListMap(databaseName, tableName);
@@ -171,7 +185,9 @@ public class DataDictService {
                 .stream().map(IndexBo::getColumnName)
                 .collect(Collectors.toSet());
 
+
         indexNameIndexBoListMap.forEach((indexName, indexBoList) -> {
+
 
             Set<String> columnSet = indexBoList.stream().map(IndexBo::getColumnName).collect(Collectors.toSet());
 
@@ -179,12 +195,20 @@ public class DataDictService {
                 //create index IDX_BWT_INSTANCEID on BIZ_WORKFLOW_TOKEN (INSTANCEID)
 
 
-                String indexNameFul = indexName + "_" + getTableAliasName(tableName);
+                String indexNameFul = indexName;
 
-                if (indexNameFul.length() >= 30) {
+
+                if (indexNameList.contains(indexNameFul.toLowerCase())) {
+                    indexNameFul = indexNameFul + "_" + getTableAliasName(tableName);
+                }
+
+                if (indexNameFul.length() > 30) {
                     //超长的索引，进行简化
                     indexNameFul = getTableAliasName(indexNameFul) + "_" + getTableAliasName(tableName);
                 }
+
+
+                indexNameList.add(indexNameFul.toLowerCase());
 
                 if (indexNameMap.containsKey(indexNameFul)) {
                     indexNameMap.put(indexNameFul, new AtomicInteger(indexNameMap.get(indexNameFul).incrementAndGet()));
@@ -198,12 +222,20 @@ public class DataDictService {
 
                 String createTableIndexStringBuilder = "create index " +
                         indexNameFul +
-                        " on " + tableName +
+                        " on " + tableName + "" +
                         indexBoList.stream()
                                 .sorted(Comparator.comparingInt(IndexBo::getSeqInIndex))
                                 .map(IndexBo::getColumnName)
+                                .map(item -> {
+                                    if (tableName.toLowerCase().startsWith("i")){
+                                        return "\"" + item + "\"";
+                                    }
+                                    return item;
+                                })
                                 .collect(Collectors.joining(",", "(", ")"));
                 createTableIndexSqls.add(createTableIndexStringBuilder);
+
+
             }
 
 
@@ -228,7 +260,7 @@ public class DataDictService {
     private List<String> getPreSqls(String databaseName, String tableName, List<ColumnBo> columnBos) {
         List<String> columnCommentSqls = new LinkedList<>();
 
-        StringBuilder createTableStringBuilder = new StringBuilder("create table ").append(tableName).append("(");
+        StringBuilder createTableStringBuilder = new StringBuilder("create table ").append(tableName).append(" (");
 
         List<String> primaryFieldList = Lists.newLinkedList();
         columnBos.forEach(columnBo -> {
@@ -241,7 +273,7 @@ public class DataDictService {
 
             String columnComment = columnBo.getCOLUMN_COMMENT();
             if (!Strings.isNullOrEmpty(columnComment)) {
-                columnCommentSqls.add(String.format("comment on column %s.%s  is '%s'", tableName, columnName, columnComment));
+                columnCommentSqls.add(String.format("comment on column %s.%s  is '%s'", "" + tableName + "", "" + columnName + "", columnComment));
             }
 
 
@@ -309,7 +341,7 @@ public class DataDictService {
         StringBuilder stringBuilder = new StringBuilder("select");
 
         columnBos.forEach(columnBo -> {
-            String columnName = columnBo.getCOLUMN_NAME();
+            String columnName = columnBo.getCOLUMN_NAME().replaceAll("\"","");
             String columnType = columnBo.getCOLUMN_TYPE();
 
             ColumnTypeBo columnTypeBo = ColumnTypeBo.getColumnTypeBo(columnType);
@@ -323,5 +355,65 @@ public class DataDictService {
         });
 
         return stringBuilder.deleteCharAt(stringBuilder.length() - 1).append(" from ").append(tableName).append(";").toString();
+    }
+
+
+    public void executeDDL(List<DataXConfigBean.Content> contentList, String oracleDatabaseName) {
+        //先删除原来的表，然后，进行表初始化；
+        Map<String, TableBo> tableBoMap = oracleDao.getTableBoMap(oracleDatabaseName);
+
+        if (!tableBoMap.isEmpty()) {
+            List<DDLExecuteBo> dropTableDDLResultList = tableBoMap.keySet().stream().map(tableName -> {
+                if (Character.isLowerCase(tableName.charAt(0))) {
+                    tableName = "\"" + tableName + "\"";
+                }
+                String dropTableSql = String.format("drop table %s", tableName);
+                return oracleDao.executeDDLSql(dropTableSql);
+            }).collect(Collectors.toList());
+
+            boolean allDropSuc = dropTableDDLResultList.stream().allMatch(item -> item.getRes() == 0);
+            if (!allDropSuc) {
+                String msg = dropTableDDLResultList.stream().filter(item -> item.getRes() != 0)
+                        .map(item -> item.getErr() + " sql: " + item.getSql())
+                        .collect(Collectors.joining("<br>"));
+                throw new IllegalArgumentException("删除oracle的语句执行出现错误：" + msg);
+            }
+
+        }
+
+        //执行oracle的建表语句,备注更新语句，建立索引
+        List<DDLExecuteBo> ddlInitList = contentList.stream()
+                .flatMap(content -> {
+
+                    List<String> preInitTableSql = content.getWriter().getParameter().getPreInitTableSql();
+                    String[] sqlArray = new String[preInitTableSql.size()];
+                    preInitTableSql.toArray(sqlArray);
+                    return Arrays.stream(sqlArray);
+                }).map(sql -> {
+                    String sql1 = sql.replaceAll(";", "");
+                    return oracleDao.executeDDLSql(sql1);
+                }).collect(Collectors.toList());
+
+        boolean allInitSuc = ddlInitList.stream().allMatch(item -> item.getRes() == 0);
+
+        if (!allInitSuc) {
+            String msg = ddlInitList.stream().filter(item -> item.getRes() != 0)
+                    .map(item -> item.getErr() + " sql: " + item.getSql())
+                    .collect(Collectors.joining("<br>"));
+            throw new IllegalArgumentException("oracle初始语句出现错误：" + msg);
+        }
+
+
+    }
+
+    /**
+     * 初始化oracle的数据源
+     *
+     * @param connectionUrl jdbcUrl
+     * @param username      用户名
+     * @param password      密码
+     */
+    public void initConnectionOracle(String connectionUrl, String username, String password) {
+        oracleDao.rebuildDataSource(connectionUrl, username, password);
     }
 }

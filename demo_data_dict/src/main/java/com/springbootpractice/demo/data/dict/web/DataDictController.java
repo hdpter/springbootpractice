@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,17 +35,31 @@ public class DataDictController {
         this.dataDictService = dataDictService;
     }
 
-    @GetMapping(path = "/index")
-    @ApiIgnore
-    public ModelAndView index() {
-        return new ModelAndView("index");
-    }
+
 
     @PostMapping(path = "/testConnection")
     @ApiOperation(value = "测试连接信息并获取数据库列表")
     public DatabaseListResParam testConnection(@NonNull ConnectionReqParam param) {
-        final List<String> connectionDatabaseList = dataDictService.getConnectionDatabaseList(param.getConnectionUrl(), param.getUsername(), param.getPassword());
-        return DatabaseListResParam.builder().databaseList(connectionDatabaseList).build();
+
+
+        String oracleLinkMsg = "";
+        List<String> connectionDatabaseList = Collections.emptyList();
+
+
+        String connectionUrl = param.getConnectionUrl();
+        String username = param.getUsername();
+        String password = param.getPassword();
+
+        String dbType = param.getDbType();
+        if ("oracle".equalsIgnoreCase(dbType)){
+            dataDictService.initConnectionOracle(connectionUrl, username, password);
+            oracleLinkMsg = "oracle数据源初始化成功";
+        }else{
+            connectionDatabaseList = dataDictService.getConnectionDatabaseList(connectionUrl, username, password);
+        }
+
+
+        return DatabaseListResParam.builder().databaseList(connectionDatabaseList).oracleLinkMsg(oracleLinkMsg).build();
     }
 
     @PostMapping(path = "/generateDataDict")

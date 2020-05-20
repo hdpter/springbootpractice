@@ -12,7 +12,7 @@
 	<artifactId>demo_data_dict</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo_data_dict</name>
-	<description>生成数据字典</description>
+	<description>数据库操作小工具</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -70,10 +70,6 @@
 			<artifactId>druid</artifactId>
 			<version>1.1.22</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-jdbc</artifactId>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>com.oracle.ojdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
@@ -97,13 +93,13 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -114,6 +110,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>data_tool_app</finalName>
 	</build>
 
 </project>

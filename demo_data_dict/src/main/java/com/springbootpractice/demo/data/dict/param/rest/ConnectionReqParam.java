@@ -16,6 +16,9 @@ import java.io.Serializable;
 public class ConnectionReqParam implements Serializable {
     private static final long serialVersionUID = 8435495761805759123L;
 
+    @ApiModelProperty("连接数据库类型，仅支持mysql和oracle")
+    private String dbType="mysql";
+
     @ApiModelProperty("连接url,格式：jdbc:mysql://localhost:3306")
     private String connectionUrl;
 

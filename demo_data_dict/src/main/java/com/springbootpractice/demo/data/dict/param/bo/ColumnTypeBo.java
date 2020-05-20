@@ -38,6 +38,8 @@ public class ColumnTypeBo implements Serializable {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(columnNameString), "字段字符串为空");
 
         String trimString = columnNameString.trim();
+
+
         int indexOfStart = trimString.indexOf("(");
 
         if (indexOfStart < 0) {
@@ -48,7 +50,6 @@ public class ColumnTypeBo implements Serializable {
         String columnLengthString = trimString.substring(indexOfStart + 1, trimString.indexOf(")"));
 
         if (!NumberUtils.isDigits(columnLengthString)) {
-            log.info("字段信息：{},{}", columnTypeString, columnLengthString);
             return ColumnTypeBo.builder().columnTypeName(columnTypeString).build();
         }
 
@@ -106,15 +107,15 @@ public class ColumnTypeBo implements Serializable {
          * INT(-2147483648-2147483647)
          * BIGINT(-9223372036854775808-9223372036854775807)
          */
-        mysqlTypeMapOracleType.put("tinyint", "number");
+        mysqlTypeMapOracleType.put("tinyint", "int");
         mysqlTypeMapOracleType.put("SMALLINT".toLowerCase(), "number");
         mysqlTypeMapOracleType.put("MEDIUMINT".toLowerCase(), "number");
-        mysqlTypeMapOracleType.put("int", "number");
-        mysqlTypeMapOracleType.put("BIGINT".toLowerCase(), "number");
-        mysqlTypeMapOracleType.put("DECIMAL".toLowerCase(), "number");
+        mysqlTypeMapOracleType.put("int", "int");
+        mysqlTypeMapOracleType.put("BIGINT".toLowerCase(), "number(20)");
+        mysqlTypeMapOracleType.put("DECIMAL".toLowerCase(), "decimal(19, 6)");
         mysqlTypeMapOracleType.put("float", "number");
         mysqlTypeMapOracleType.put("double", "number");
-        mysqlTypeMapOracleType.put("bit", "number");
+        mysqlTypeMapOracleType.put("bit", "number(1,0)");
 
         mysqlTypeMapOracleType.put("date", "date");
         mysqlTypeMapOracleType.put("datetime", "date");
@@ -147,7 +148,7 @@ public class ColumnTypeBo implements Serializable {
         String oracleTypeName = mysqlTypeMapOracleType.get(columnTypeName);
         Integer columnTypeLength = columnTypeBo.getColumnTypeLength();
 
-        if (Objects.isNull(columnTypeLength)) {
+        if (Objects.isNull(columnTypeLength)||Arrays.asList("int","bigint","decimal","bit","tinyint").contains(columnTypeName)) {
             return oracleTypeName;
         }
         //长度超过4000，使用clob存储
@@ -157,6 +158,13 @@ public class ColumnTypeBo implements Serializable {
         //长度超过38，使用number字段类型
         if ("number".equalsIgnoreCase(oracleTypeName) && columnTypeLength>38){
             return "number";
+        }
+
+        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength<=1333 ){
+            columnTypeLength*=3;
+        }
+        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength>1333 ){
+            columnTypeLength=4000;
         }
 
         return new StringBuilder(oracleTypeName).append("(").append(columnTypeLength).append(")").toString();

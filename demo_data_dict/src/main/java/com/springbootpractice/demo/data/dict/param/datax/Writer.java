@@ -50,7 +50,7 @@ public class Writer implements Serializable {
         private String truncate="true";
 
         @ApiModelProperty("批量插入的配置")
-        private String batchSize="128";
+        private String batchSize="256";
 
 
         @ApiModelProperty("行配置")
