@@ -1,0 +1,13 @@
+com/authine/web/cola/dto/domainmodel/Department.class
+com/authine/web/cola/dto/domainevent/DomainEventConstant.class
+com/authine/web/cola/dto/domainmodel/CompanyType.class
+com/authine/web/cola/dto/CustomerListByNameQry.class
+com/authine/web/cola/dto/domainmodel/Customer.class
+com/authine/web/cola/dto/domainmodel/SourceType.class
+com/authine/web/cola/dto/domainmodel/ErrorCode.class
+com/authine/web/cola/api/CustomerServiceI.class
+com/authine/web/cola/dto/OrgnizationQry.class
+com/authine/web/cola/dto/CustomerAddCmd.class
+com/authine/web/cola/dto/domainevent/CustomerCreatedEvent.class
+com/authine/web/cola/api/OrganizationServiceI.class
+com/authine/web/cola/dto/domainmodel/CustomerType.class

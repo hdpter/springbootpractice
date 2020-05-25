@@ -1,0 +1,9 @@
+com/authine/web/cola/domain/customer/extpt/WechatOrganizationExt.class
+com/authine/web/cola/domain/customer/extpt/DingTalkOrganizationExt.class
+com/authine/web/cola/domain/gateway/CreditGateway.class
+com/authine/web/cola/domain/customer/Customer.class
+com/authine/web/cola/domain/customer/domainservice/CreditChecker.class
+com/authine/web/cola/domain/gateway/CustomerGateway.class
+com/authine/web/cola/domain/customer/Credit.class
+com/authine/web/cola/domain/customer/OrganizationExtPt.class
+com/authine/web/cola/domain/customer/Organization.class

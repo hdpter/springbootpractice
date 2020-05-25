@@ -269,6 +269,11 @@ public class DataDictService {
             ColumnTypeBo columnTypeBo = ColumnTypeBo.getColumnTypeBo(columnType);
             String oracleTypeString = ColumnTypeBo.getOracleType(columnTypeBo);
 
+            if (tableName.toLowerCase().substring(0,1).equalsIgnoreCase("i") && "clob".equalsIgnoreCase(oracleTypeString)){
+                oracleTypeString = "varchar2(4000)";
+            }
+
+
             String columnName = columnBo.getCOLUMN_NAME();
 
             String columnComment = columnBo.getCOLUMN_COMMENT();
@@ -349,6 +354,10 @@ public class DataDictService {
             //更多不对应的类型，也在这块处理；
             if ("bit".equalsIgnoreCase(columnTypeBo.getColumnTypeName())) {
                 columnName = "if(" + columnName + "=true,1,0) " + columnName;
+            }
+
+            if ("json".equalsIgnoreCase(columnTypeBo.getColumnTypeName())){
+                columnName = "if("+columnName+ " is null,"+columnName+",JSON_PRETTY("+ columnName + ")) as " + columnName+" ";
             }
 
             stringBuilder.append(" ").append(columnName).append(",");

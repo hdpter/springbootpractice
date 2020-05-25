@@ -152,19 +152,17 @@ public class ColumnTypeBo implements Serializable {
             return oracleTypeName;
         }
         //长度超过4000，使用clob存储
-        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength>4000){
-            return mysqlTypeMapOracleType.get("tinytext");
+        if ("varchar2".equalsIgnoreCase(oracleTypeName) ){
+            if (columnTypeLength>1333)
+            {
+                return mysqlTypeMapOracleType.get("tinytext");
+            }else{
+                columnTypeLength*=3;
+            }
         }
         //长度超过38，使用number字段类型
         if ("number".equalsIgnoreCase(oracleTypeName) && columnTypeLength>38){
             return "number";
-        }
-
-        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength<=1333 ){
-            columnTypeLength*=3;
-        }
-        if ("varchar2".equalsIgnoreCase(oracleTypeName) && columnTypeLength>1333 ){
-            columnTypeLength=4000;
         }
 
         return new StringBuilder(oracleTypeName).append("(").append(columnTypeLength).append(")").toString();

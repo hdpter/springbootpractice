@@ -29,6 +29,7 @@
 			<groupId>com.authine.web.cola</groupId>
 			<artifactId>cola_web1-client</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -1,0 +1,8 @@
+com/authine/web/cola/repository/CustomerRepository.class
+com/authine/web/cola/config/DiamondConfig.class
+com/authine/web/cola/repository/CustomerMapper.class
+com/authine/web/cola/config/ColaConfig.class
+com/authine/web/cola/gateway/CreditGatewayImpl.class
+com/authine/web/cola/repository/CustomerDO.class
+com/authine/web/cola/message/DomainEventPublisher.class
+com/authine/web/cola/common/BizCode.class

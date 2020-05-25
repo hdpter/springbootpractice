@@ -1,0 +1,10 @@
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/Credit.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/Organization.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/domainservice/CreditChecker.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/package-info.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/extpt/WechatOrganizationExt.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/gateway/CreditGateway.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/OrganizationExtPt.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/extpt/DingTalkOrganizationExt.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/customer/Customer.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-domain/src/main/java/com/authine/web/cola/domain/gateway/CustomerGateway.java

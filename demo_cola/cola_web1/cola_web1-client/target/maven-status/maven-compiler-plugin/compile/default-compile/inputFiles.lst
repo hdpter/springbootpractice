@@ -1,0 +1,13 @@
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/Customer.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/Department.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainevent/CustomerCreatedEvent.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/SourceType.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/CustomerListByNameQry.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/CustomerAddCmd.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/api/OrganizationServiceI.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/CustomerType.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/ErrorCode.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainevent/DomainEventConstant.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/api/CustomerServiceI.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/OrgnizationQry.java
+/Users/lifuchun/src/git/github/springbootpractice/demo_cola/cola_web1/cola_web1-client/src/main/java/com/authine/web/cola/dto/domainmodel/CompanyType.java
